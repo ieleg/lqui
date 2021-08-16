@@ -16,7 +16,7 @@ module.exports = {
     "declaration-block-trailing-semicolon": null,
     "property-no-vendor-prefix": [
       true,
-      { ignoreProperties: ["background-clip"] }
+      { ignoreProperties: ["background-clip", "box-orient"] }
     ],
     "number-leading-zero": "never",
     "selector-pseudo-element-no-unknown": [

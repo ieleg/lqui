@@ -35,46 +35,45 @@
 
 <script>
 export default {
+  name: "LqUpload",
   props: {
     headers: {
       type: Object,
       default: () => ({
-        'x-platform': 'ep',
-      }),
+        "x-platform": "ep"
+      })
     },
     /* 标题文案 */
     title: {
       type: String,
-      default: '批量导入',
+      default: "批量导入"
     },
     /* 下载模板文案 */
     templateTitle: {
       type: String,
-      default: '批量导入模板',
+      default: "批量导入模板"
     },
     value: {
-      value: {
-        type: Boolean,
-        default: false,
-      },
+      type: Boolean,
+      default: false
     },
     uploadUrl: {
       type: String,
-      default: '',
+      default: ""
     },
     uploadName: {
       type: String,
-      default: '',
+      default: ""
     },
     /* 下载模板文件回调 */
     exportTemplate: {
       type: Function,
-      default: () => {},
-    },
+      default: () => {}
+    }
   },
   data() {
     return {
-      modal: this.value,
+      modal: this.value
     }
   },
   watch: {
@@ -83,9 +82,9 @@ export default {
     },
     modal(val) {
       if (val === false) {
-        this.$emit('input', val)
+        this.$emit("input", val)
       }
-    },
+    }
   },
   mounted() {},
 
@@ -95,19 +94,19 @@ export default {
         this.$Message.success({
           content: response.message,
           duration: 1.5,
-          closable: true,
+          closable: true
         })
         this.modal = false
-        this.$emit('upload-success', true)
+        this.$emit("upload-success", true)
       } else {
         this.$Message.error({
           content: response.message,
           duration: 1.5,
-          closable: true,
+          closable: true
         })
       }
-    },
-  },
+    }
+  }
 }
 </script>
 
@@ -118,7 +117,7 @@ export default {
 
 .template {
   color: #3299ff;
-  transition: all .3s;
+  transition: all 0.3s;
 
   &:hover {
     color: #8fc7ff;

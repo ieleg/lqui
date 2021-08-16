@@ -35,6 +35,7 @@
 
 <script>
 export default {
+  name: "Lqprogress",
   props: {
     /**
      * 是否显示弹窗

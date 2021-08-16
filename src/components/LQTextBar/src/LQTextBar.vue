@@ -14,6 +14,7 @@
 
 <script>
 export default {
+  name: "LqTextBar",
   props: {
     text: {
       type: Array,
@@ -40,7 +41,7 @@ export default {
   &-box {
     display: -webkit-box;
     overflow: hidden;
-    box-orient: vertical;
+    -webkit-box-orient: vertical;
     -webkit-line-clamp: 1;
     line-clamp: 1;
     line-height: 1.5em;
