@@ -1,0 +1,90 @@
+import { Meta, Canvas, Story, ArgsTable } from '@storybook/addon-docs/blocks';
+
+import LqProgress from '../../src/components/LQProgress';
+
+<Meta title="组件/进度条" component={LqProgress} argTypes={{}} />
+
+<style>{`
+  .box {
+    height:100px;
+    width: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+`}</style>
+
+export const Template = (args, { argTypes }) => ({
+  props: Object.keys(argTypes),
+  components: { LqProgress },
+  data() {
+    return {};
+  },
+  template:
+    '<div class="box"><lq-Progress v-bind="$props" ><span slot="label">比值: {{part/total}}</span><span slot="tip">part:{{part}} total:{{total}}</span></lq-Progress></div>'
+});
+export const Template2 = (args, { argTypes }) => ({
+  props: Object.keys(argTypes),
+  components: { LqProgress },
+  data() {
+    return {};
+  },
+  template:
+    '<div class="box"><lq-Progress v-bind="$props" ><span slot="label">完成率{{part/total*100}}%</span></lq-Progress></div>'
+});
+export const Template3 = (args, { argTypes }) => ({
+  props: Object.keys(argTypes),
+  components: { LqProgress },
+  data() {
+    return {};
+  },
+  template:
+    '<div style="width: 420px"><lq-Progress v-bind="$props" ><span slot="tip">4123</span><span slot="label">我是一些信息单独</span></lq-Progress></div>'
+});
+
+# lq-progress
+
+进度条，不同比值显示不同颜色，可控制弹窗信息
+
+<Canvas>
+  <Story
+    name="默认"
+    args={{
+      part: 50,
+      total: 100
+    }}
+  >
+    {Template.bind({})}
+  </Story>
+</Canvas>
+
+## 不显示弹窗
+
+<Canvas>
+  <Story
+    name="无弹窗"
+    args={{
+      part: 10,
+      total: 100,
+      showToolTip: false
+    }}
+  >
+    {Template2.bind({})}
+  </Story>
+</Canvas>
+
+## 自由编辑
+
+<Canvas>
+  <Story
+    name="自由编辑"
+    args={{
+      part: 90,
+      total: 100
+    }}
+  >
+    {Template.bind({})}
+  </Story>
+</Canvas>
+
+<ArgsTable story="自由编辑" />

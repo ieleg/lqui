@@ -1,0 +1,59 @@
+import { Meta, Canvas, Story, ArgsTable } from '@storybook/addon-docs/blocks';
+
+import LqTextBar from '../../src/components/LQTextBar';
+
+<Meta title="组件/文本块" component={LqTextBar} argTypes={{}} />
+
+export const Template = (args, { argTypes }) => ({
+  props: Object.keys(argTypes),
+  components: { LqTextBar },
+  data() {
+    return {
+      text: ['按时打发撒旦']
+    };
+  },
+  template: '<div style="width: 420px"><lq-text-bar v-bind="$props" /></div>'
+});
+
+# lq-text-bar
+单行文本条，纯展示，溢出省略，props为text数组，每行以index分割
+<Canvas>
+  <Story
+    name="默认"
+    args={{
+      text: [
+        '一行白鹭上青天',
+        '首先是犯下傲慢之罪的',
+        '无边落木萧萧下，不尽长江滚滚来无边落木萧萧下，不尽长江滚滚来无边落木萧萧下，不尽长江滚滚来'
+      ]
+    }}
+  >
+    {Template.bind({})}
+  </Story>
+</Canvas>
+
+## 空的
+<Canvas>
+  <Story name="空的" args={{}}>
+    {Template.bind({})}
+  </Story>
+</Canvas>
+
+## 自由编辑
+
+<Canvas>
+  <Story
+    name="自由编辑"
+    args={{
+      text: [
+        '大大实打实的',
+        '无边落木萧萧下，不尽长江滚滚来无边落木萧萧下，不尽长江滚滚来',
+        '无边落木萧萧下，不尽长江滚滚来'
+      ]
+    }}
+  >
+    {Template.bind({})}
+  </Story>
+</Canvas>
+
+<ArgsTable story="自由编辑" />

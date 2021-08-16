@@ -1,0 +1,32 @@
+import { Meta, Canvas, Story, ArgsTable } from '@storybook/addon-docs/blocks';
+
+import LqUpload from '../../src/components/LqUpload';
+
+<Meta title="第三方组件/上传" component={LqUpload} argTypes={{}} />
+
+export const Template = (args, { argTypes }) => ({
+  props: Object.keys(argTypes),
+  components: { LqUpload },
+  data() {
+    return {
+      visible: false
+    };
+  },
+  template: '<div style="width: 420px"><lq-upload v-bind="$props" v-model="visible"/><Button @click="visible=true">open</Button></div>'
+});
+
+# LqUpload
+单行文本条，纯展示，溢出省略，props为text数组，每行以index分割
+
+## 可编辑
+<Canvas>
+  <Story
+    name="自由编辑"
+    args={{
+    }}
+  >
+    {Template.bind({})}
+  </Story>
+</Canvas>
+
+<ArgsTable story="自由编辑" />
