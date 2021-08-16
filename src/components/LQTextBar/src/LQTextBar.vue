@@ -17,8 +17,8 @@ export default {
   props: {
     text: {
       type: Array,
-      default: () => [],
-    },
+      default: () => []
+    }
   },
   data() {
     return {}
@@ -26,7 +26,7 @@ export default {
   computed: {},
   mounted() {},
 
-  methods: {},
+  methods: {}
 }
 </script>
 

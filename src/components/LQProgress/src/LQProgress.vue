@@ -41,27 +41,27 @@ export default {
      */
     showToolTip: {
       type: Boolean,
-      default: true,
+      default: true
     },
     /**
      * 分子
      */
     part: {
       type: Number,
-      default: 10,
+      default: 10
     },
     /**
      * 分母
      */
     total: {
       type: Number,
-      default: 100,
-    },
+      default: 100
+    }
   },
 
   data() {
     return {
-      seen: false,
+      seen: false
     }
   },
   computed: {
@@ -71,18 +71,18 @@ export default {
     classes() {
       const percent = this.value
       if (percent < 50) {
-        return { 'lq-progress-bar-blue': true }
+        return { "lq-progress-bar-blue": true }
       }
       if (percent >= 50 && percent < 80) {
-        return { 'lq-progress-bar-yellow': true }
+        return { "lq-progress-bar-yellow": true }
       }
-      return { 'lq-progress-bar-red': true }
-    },
+      return { "lq-progress-bar-red": true }
+    }
   },
   methods: {
     leave() {
       this.seen = false
-      this.$refs.progress.style.cursor = 'default'
+      this.$refs.progress.style.cursor = "default"
     },
     mouseenter(e) {
       // console.log(e);
@@ -90,10 +90,10 @@ export default {
       console.log(e)
       this.$refs.edittool.style.left = `${offsetX - 65}px`
       this.$refs.edittool.style.top = `${offsetY - 80}px`
-      this.$refs.progress.style.cursor = 'pointer'
+      this.$refs.progress.style.cursor = "pointer"
       this.seen = true
-    },
-  },
+    }
+  }
 }
 </script>
 
@@ -108,7 +108,7 @@ export default {
   padding: 1em;
   background: #fff;
   color: #353c47;
-  filter: drop-shadow(0 1px 4px rgba(0, 0, 0, .2));
+  filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
 
   &::after {
     position: absolute;
@@ -131,7 +131,7 @@ export default {
   width: 400px;
   height: 8px;
   margin-bottom: 10px;
-  background-color: rgba(134, 178, 236, .13);
+  background-color: rgba(134, 178, 236, 0.13);
   border-radius: 4px;
   float: left;
   // 扩大事件范围
@@ -159,7 +159,7 @@ export default {
     height: 100%;
     margin-bottom: 10px;
     border-radius: 4px / 4px 0 0 4px;
-    box-shadow: 0 -1px 0 rgba(0, 0, 0, .1) inset;
+    box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.1) inset;
     line-height: 20px;
 
     &-label {
@@ -179,14 +179,13 @@ export default {
         right: -0;
         width: 1px;
         height: 16px;
-        background:
-          linear-gradient(
-            to top,
-            $color 20%,
-            transparent 0,
-            transparent 80%,
-            $color 0
-          );
+        background: linear-gradient(
+          to top,
+          $color 20%,
+          transparent 0,
+          transparent 80%,
+          $color 0
+        );
         content: "";
         transform: translateY(-25%);
       }

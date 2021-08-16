@@ -77,18 +77,6 @@
       "pre-commit": "lint-staged"
     }
   },
-  "lint-staged": {
-    "src/**/*.+(scss|css|vue)": [  
-        "prettier --write",
-        "stylelint --fix ",
-        "git add -n"
-    ],
-    "src/**/*.+(js|vue|)": [ 
-        "prettier --write",
-        "eslint --fix",
-        "git add -n"
-    ]
-  },
   "keywords": [
     "design-system",
     "components",
