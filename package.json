@@ -14,7 +14,8 @@
     "eslint": "eslint --fix --no-ignore .storybook/**/**/*.{vue,js}",
     "prettier": "prettier --write '**/*.{js,vue,scss,json,yml}'",
     "storybook": "start-storybook -s ./public -p 6006",
-    "stylelint:fix": "stylelint **/*.{scss,vue}",
+    "stylelint:fix": "stylelint --fix **/*.{scss,vue}",
+    "stylelint": "stylelint **/*.{scss,vue}",
     "test:unit": "jest"
   },
   "main": "./dist/lqui.common.js",

@@ -12,11 +12,11 @@ module.exports = {
     // 指定单位的大小写
     "unit-case": null,
     "no-empty-source": null,
-    "property-no-unknown": null,
+    // "property-no-unknown": null,
     "declaration-block-trailing-semicolon": null,
     "property-no-vendor-prefix": [
       true,
-      { ignoreProperties: ["background-clip", "box-orient"] }
+      { ignoreProperties: ["background-clip"] }
     ],
     "number-leading-zero": "never",
     "selector-pseudo-element-no-unknown": [
