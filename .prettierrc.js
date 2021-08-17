@@ -10,5 +10,6 @@ module.exports = {
   endOfLine: "auto", // 结尾是 \n \r \n\r auto
   htmlWhitespaceSensitivity: "ignore",
   ignorePath: ".prettierignore", // 不使用prettier格式化的文件填写在项目的.prettierignore文件中
-  requireConfig: false // Require a 'prettierconfig' to format prettier
+  requireConfig: false, // Require a 'prettierconfig' to format prettier
+  "files.autoGuessEncoding": true // 自动识别文件编码格式
 }

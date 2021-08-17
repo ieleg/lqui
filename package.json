@@ -12,7 +12,7 @@
     "create-badges": "node scripts/badges.js",
     "deploy-storybook": "storybook-to-ghpages",
     "eslint": "eslint --fix --no-ignore .storybook/**/**/*.{vue,js}",
-    "prettier": "prettier --write '**/*.{js,vue,scss,json,yml}'",
+    "prettier": "prettier --write **/*.{js,vue,scss,json,yml}",
     "storybook": "start-storybook -s ./public -p 6006",
     "stylelint:fix": "stylelint --fix **/*.{scss,vue}",
     "stylelint": "stylelint **/*.{scss,vue}",

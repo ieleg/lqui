@@ -1,3 +1,3 @@
-import LQProgress from './src/LQProgress.vue'
+import LQProgress from "./src/LQProgress.vue"
 
 export default LQProgress
