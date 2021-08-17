@@ -3,7 +3,7 @@ node_modules
 coverage
 /dist
 .out
-
+path
 
 # local env files
 .env.local

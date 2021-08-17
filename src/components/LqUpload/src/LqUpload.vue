@@ -13,14 +13,14 @@
         :on-success="uploadSuccess"
         :format="['xlsx', 'xls']"
       >
-        <div class="upload">
+        <div class="lq-upload">
           <i class="el-icon-upload" size="52" style="color: #39f" />
           <p class="text">
             点击选择或者拖拽要上传的文件
           </p>
         </div>
       </el-upload>
-      <span class="template text" @click="exportTemplate">
+      <span class="lq-template" @click="exportTemplate">
         {{ templateTitle }}.xls
       </span>
       <span slot="footer" class="dialog-footer">
@@ -111,22 +111,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.upload {
+.lq-upload {
   width: 100%;
 }
 
-.template {
+.lq-template {
   color: #3299ff;
   transition: all 0.3s;
 
   &:hover {
     color: #8fc7ff;
     cursor: pointer;
+    font-size: 12px;
   }
-}
-
-.text {
-  font-size: 12px;
 }
 
 ::v-deep .el-upload {
