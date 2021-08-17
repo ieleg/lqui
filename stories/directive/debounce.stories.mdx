@@ -1,0 +1,82 @@
+import { Meta, Canvas, Story, ArgsTable } from '@storybook/addon-docs/blocks';
+
+
+<Meta title="util/防抖"  argTypes={{}} />
+
+export const Template3 = (args, { argTypes }) => ({
+  props: Object.keys(argTypes),
+  data() {
+    return {
+      time: new Date(),
+      dur: '',
+      inputStr: ''
+    };
+  },
+  methods: {
+    handleClick(){
+      this.dur = (new Date() - this.time) / 1000 + 's'
+      this.time = new Date()
+    }
+  },
+  mounted(){
+  },
+  template:`
+    <div>
+      <input 
+        v-debounce.keyup="[handleClick, funcDelay]"
+        v-model="inputStr"
+      />
+      <br />
+      时间间隔大于 {{funcDelay}} ms才能再次触发<br />
+      按下间隔时间: {{dur}} 
+    </div>
+  `
+});
+
+# v-debounce
+```js
+export const Template3 = (args, { argTypes }) => ({
+  props: Object.keys(argTypes),
+  data() {
+    return {
+      time: new Date(),
+      dur: '',
+      inputStr: ''
+    };
+  },
+  methods: {
+    handleClick(){
+      this.dur = (new Date() - this.time) / 1000 + 's'
+      this.time = new Date()
+    }
+  },
+  mounted(){
+  },
+  template:`
+    <div>
+      <input 
+        v-debounce.keyup="[handleClick, funcDelay]"
+        v-model="inputStr"
+      />
+      <br />
+      时间间隔大于 {{funcDelay}} ms才能再次触发<br />
+      按下间隔时间: {{dur}} 
+    </div>
+  `
+});
+```
+## demo
+经过`funcDelay`时间才能再次触发
+<Canvas>
+<Story
+  name="demo"
+  args={{
+    funcDelay: 130,
+  }}
+>
+  {Template3.bind({})}
+</Story>
+</Canvas>
+
+<ArgsTable story="demo" />
+

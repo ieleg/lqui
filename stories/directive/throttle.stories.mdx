@@ -1,0 +1,122 @@
+import { Meta, Canvas, Story, ArgsTable } from '@storybook/addon-docs/blocks';
+
+
+<Meta title="util/节流"  argTypes={{}} />
+
+<style lang="scss">{`
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  li {
+
+    width: 200px;
+    height: 50px;
+    line-height: 50px;
+    border-radius: 22px;
+    text-align: center;
+    transform: translate(0, 0);
+  }
+  .li0 {
+      background: pink;
+  }
+  .li2 {
+      background: brown;
+  }
+  .li5 {
+      background: grey;
+  }
+  .li1 {
+      background: purple;
+  }
+  .li4 {
+      background: green;
+  }
+  .dragging {
+    opcity: 1;
+  }
+`}</style>
+
+
+
+export const Template3 = (args, { argTypes }) => ({
+  props: Object.keys(argTypes),
+  data() {
+    return {
+      time: new Date(),
+      dur: ''
+    };
+  },
+  methods: {
+    handleClick(){
+      this.dur = (new Date() - this.time) / 1000 + 's'
+      this.time = new Date()
+    }
+  },
+  mounted(){
+  },
+  template:`
+    <div>
+      <button 
+        v-debounce.click.stop="[handleClick, funcDelay]"
+      >查询</button>
+      <br />
+      时间间隔大于 {{funcDelay}} ms才能再次触发<br />
+      按下间隔时间: {{dur}} 
+    </div>
+  `
+});
+
+# v-throttle
+```js
+export const Template3 = (args, { argTypes }) => ({
+  props: Object.keys(argTypes),
+  data() {
+    return {
+      time: new Date(),
+      dur: '',
+    };
+  },
+  methods: {
+    handleClick(){
+      this.dur = (new Date() - this.time) / 1000 + 's'
+      this.time = new Date()
+    }
+  },
+  mounted(){
+  },
+  template:`
+    <div>
+      <input 
+        v-throttle.click.stop="[handleClick, funcDelay]"
+        v-model="str"
+      >查询</button>
+      <br />
+      时间间隔大于 {{funcDelay}} ms才能再次触发<br />
+      按下间隔时间: {{dur}} 
+    </div>
+  `
+});
+```
+<blockquote>
+人的反应速度正常只能做到0.1秒的间隔，<br /> 
+我无意识速点可以做到89ms，可是这不稳定，而且是按下马上就松手，<br /> 
+所以人手是无法做到1分钟点鼠标1000次的，不过鼠标宏可以轻易做到
+</blockquote>
+
+## demo
+每隔`funcDelay`时间执行一次
+<Canvas>
+<Story
+  name="demo"
+  args={{
+    funcDelay: 89,
+  }}
+>
+  {Template3.bind({})}
+</Story>
+</Canvas>
+
+<ArgsTable story="demo" />
+

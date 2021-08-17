@@ -1,0 +1,100 @@
+import { Meta, Canvas, Story, ArgsTable } from '@storybook/addon-docs/blocks';
+
+import LqProgress from '../../src/components/LQProgress';
+
+<Meta title="util/拖动" component={LqProgress} argTypes={{}} />
+
+<style lang="scss">{`
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  li {
+
+    width: 200px;
+    height: 50px;
+    line-height: 50px;
+    border-radius: 22px;
+    text-align: center;
+    transform: translate(0, 0);
+  }
+  .li0 {
+      background: pink;
+  }
+  .li2 {
+      background: brown;
+  }
+  .li5 {
+      background: grey;
+  }
+  .li1 {
+      background: purple;
+  }
+  .li4 {
+      background: green;
+  }
+  .dragging {
+    opcity: 1;
+  }
+`}</style>
+
+
+
+export const Template3 = (args, { argTypes }) => ({
+  props: Object.keys(argTypes),
+  components: { LqProgress },
+  data() {
+    return {
+      arr: Array.from({ length: 7 }, (_, k) => 5-k)
+    };
+  },
+  mounted(){
+    this.$dragging.$on("dragged", ({value}) => {
+      console.log(value);
+    })
+  },
+  template:`
+    <ul>
+      <li v-for="item in arr" :key="item" v-drag="{ item, list: arr, group: 'test' }" :class="'li'+item">
+        {{ item }} brokenのsea {{ item*562 }}
+      </li>
+    </ul>
+  `
+});
+
+# v-drag
+```js
+export const Template = (args, { argTypes }) => ({
+  props: Object.keys(argTypes),
+  components: { LqProgress },
+  data() {
+    return {
+      arr: Array.from({length: 7}, (_, k) => 5-k)
+    };
+  },
+  mounted(){
+    this.$dragging.$on("dragend", ({value}) => {
+      console.log(value.list);
+    })
+  },
+  template:`
+    <ul>
+      // item应该是一个不为false的值， 否则无法拖动, !!item !== false
+      <li v-for="item in arr" :key="item" v-drag="{ item, list: arr, group: 'test' }" :class="'li'+item">
+        {{ item }} brokenのsea {{ item*562 }}
+      </li>
+    </ul>
+  `
+});
+```
+## demo
+<Story
+  name="demo"
+  args={{
+    part: 90,
+    total: 100
+  }}
+>
+  {Template3.bind({})}
+</Story>
