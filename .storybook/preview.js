@@ -1,16 +1,20 @@
-import Vue from 'vue';
-import ElementUI from 'element-ui';
+import Vue from "vue"
+import ElementUI from "element-ui"
 
-import 'element-ui/lib/theme-chalk/index.css';
+import "element-ui/lib/theme-chalk/index.css"
 Vue.use(ElementUI)
+import Drag from "../src/directive/drag.js"
+import EventLimit from "../src/directive/eventLimit"
 
+Vue.use(EventLimit)
+Vue.use(Drag)
 export const parameters = {
-  layout: 'centered',
+  layout: "centered",
   controls: { expanded: true },
   docs: {
     inlineStories: true
   }
-};
+}
 
 // export const globalTypes = {
 //   locale: {
@@ -27,12 +31,9 @@ export const parameters = {
 //   }
 // };
 
-
-
 export const decorators = [
-  (args) => ({
-    beforeCreate: function() {
-    },
-    template: '<story />'
+  args => ({
+    beforeCreate: function () {},
+    template: "<story />"
   })
-];
+]

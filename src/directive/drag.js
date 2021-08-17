@@ -295,7 +295,7 @@ export default function (Vue, options) {
       unbind: removeDragItem
     })
   } else {
-    Vue.directive("dragg", {
+    Vue.directive("drag", {
       update(newValue, oldValue) {
         addDragItem(this.el, {
           modifiers: this.modifiers,
