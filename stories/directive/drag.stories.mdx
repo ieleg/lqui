@@ -1,6 +1,6 @@
 import { Meta, Canvas, Story, ArgsTable } from "@storybook/addon-docs/blocks"
 
-<Meta title="util/拖动"  argTypes={{}} />
+<Meta title="util/拖动" argTypes={{}} />
 
 <style lang="scss">{`
   ul {
@@ -33,7 +33,7 @@ import { Meta, Canvas, Story, ArgsTable } from "@storybook/addon-docs/blocks"
       background: green;
   }
   .dragging {
-    opcity: 1;
+    opitem: 1;
   }
 `}</style>
 
@@ -68,26 +68,26 @@ export const Template = (args, { argTypes }) => ({
       curId: -1,
       form: {
         tableData: [
-          { name: "巫妖之祸", price: 5000, ad: '123', ap: '52', id: 16 },
-          { name: "血手", price: 2340, ad: '123', ap: '52', id: 15 },
-          { name: "三相", price: 1340, ad: '1234', ap: '523', id: 14 },
-          { name: "铁碎牙", price: 50300, ad: '123', ap: '52', id: 13 },
-          { name: "多兰剑", price: 50400, ad: '1423', ap: '52', id: 12 },
-          { name: "荆棘", price: 5000, ad: '1243', ap: '52', id: 11 }
+          { name: "巫妖之祸", price: 5000, ad: "123", ap: "52", id: 16 },
+          { name: "血手", price: 2340, ad: "123", ap: "52", id: 15 },
+          { name: "三相", price: 1340, ad: "1234", ap: "523", id: 14 },
+          { name: "铁碎牙", price: 50300, ad: "123", ap: "52", id: 13 },
+          { name: "多兰剑", price: 50400, ad: "1423", ap: "52", id: 12 },
+          { name: "荆棘", price: 5000, ad: "1243", ap: "52", id: 11 }
         ],
         rules: {
           ad: [
             {
               required: true,
               message: "不可为空",
-              trigger: "change",
+              trigger: "change"
             }
           ],
           ap: [
             {
               required: true,
               message: "不可为空",
-              trigger: "change",
+              trigger: "change"
             }
           ]
         }
@@ -122,6 +122,7 @@ export const Template = (args, { argTypes }) => ({
       this.$refs.form.validate(valid => {
         if (valid) {
           this.curId = -1
+          this.$message.success('保存成功')
           // do something...
         }
       })
@@ -143,7 +144,7 @@ export const Template = (args, { argTypes }) => ({
   <div>
    <el-form :model="form" :rules="form.rules" ref="form" size="small">
     <el-table :key="key" :data="form.tableData">
-      <template v-for="item in tests" v-drag="{ item: city, list: tests, group: 'lol' }">
+      <template v-for="item in tests" v-drag="{ item: item, list: tests, group: 'lol' }">
         <el-table-column v-if="checkedtests.indexOf(item.key) > -1" :key="item.id" :label="item.label" align="center">
           <div v-if="item.children">
             <el-table-column v-for="_item in item.children" :key="_item.id" :label="_item.label" :prop="_item.key" >
@@ -166,23 +167,24 @@ export const Template = (args, { argTypes }) => ({
             {{row[item.key]}}
             </div>
             <div v-else >
-              <span v-if="row.id !== curId" @click="curId = row.id">编辑</span>
-              <span v-else @click="save">保存</span>
+              <el-button type="primary" v-if="row.id !== curId" @click="curId = row.id">编辑</el-button>
+              <el-button type="success" v-else @click="save">保存</el-button>
             </div>
           </template>
         </el-table-column>
       </template>
     </el-table>
     </el-form>
+    <h3>可拖拽其移动表头位置</h3>
     <el-checkbox-group v-model="checkedtests" style="display:flex;flex-direction: column;" @change="key++">
       <el-checkbox
         class="bar"
-        v-for="(city, index) in tests"
-        :label="city.key"
-        :key="city.key"
-        v-drag="{ item: city, list: tests, group: 'lol' }"
+        v-for="(item, index) in tests"
+        :label="item.key"
+        :key="item.key"
+        v-drag="{ item: item, list: tests, group: 'lol' }"
       >
-        {{ city.label }}
+        {{ item.label }}
         <el-button type="text" @click="handleUp(index)" v-show="index > 0">
           up
         </el-button>
@@ -237,6 +239,34 @@ export const Template = (args, { argTypes }) => ({
   {Template3.bind({})}
 </Story>
 
+
+
+## 表头根据拖拽顺序移动
+
+声明一个表头数组,数组元素位置改变即可改变表格中列的位置
+
+```js
+[
+  { id: 1, label: "装备", key: "name" },
+  { id: 2, label: "价格", key: "price" },
+  { id: 4, label: "操作", key: "edit" },
+  {
+    id: 3,
+    label: "攻击",
+    key: "attack",
+    children: [
+      { id: 31, label: "魔法攻击", key: "ad" },
+      { id: 32, label: "物理攻击", key: "ap" }
+    ]
+  }
+]
+```
+
+<Canvas>
+  <Story name="dem2o">{Template.bind({})}</Story>
+</Canvas>
+
+### 源码
 ```js
 export const Template = (args, { argTypes }) => ({
   props: Object.keys(argTypes),
@@ -248,26 +278,26 @@ export const Template = (args, { argTypes }) => ({
       curId: -1,
       form: {
         tableData: [
-          { name: "巫妖之祸", price: 5000, ad: '123', ap: '52', id: 16 },
-          { name: "血手", price: 2340, ad: '123', ap: '52', id: 15 },
-          { name: "三相", price: 1340, ad: '1234', ap: '523', id: 14 },
-          { name: "铁碎牙", price: 50300, ad: '123', ap: '52', id: 13 },
-          { name: "多兰剑", price: 50400, ad: '1423', ap: '52', id: 12 },
-          { name: "荆棘", price: 5000, ad: '1243', ap: '52', id: 11 }
+          { name: "巫妖之祸", price: 5000, ad: "123", ap: "52", id: 16 },
+          { name: "血手", price: 2340, ad: "123", ap: "52", id: 15 },
+          { name: "三相", price: 1340, ad: "1234", ap: "523", id: 14 },
+          { name: "铁碎牙", price: 50300, ad: "123", ap: "52", id: 13 },
+          { name: "多兰剑", price: 50400, ad: "1423", ap: "52", id: 12 },
+          { name: "荆棘", price: 5000, ad: "1243", ap: "52", id: 11 }
         ],
         rules: {
           ad: [
             {
               required: true,
               message: "不可为空",
-              trigger: "change",
+              trigger: "change"
             }
           ],
           ap: [
             {
               required: true,
               message: "不可为空",
-              trigger: "change",
+              trigger: "change"
             }
           ]
         }
@@ -323,7 +353,7 @@ export const Template = (args, { argTypes }) => ({
   <div>
    <el-form :model="form" :rules="form.rules" ref="form" size="small">
     <el-table :key="key" :data="form.tableData">
-      <template v-for="item in tests" v-drag="{ item: city, list: tests, group: 'lol' }">
+      <template v-for="item in tests" v-drag="{ item: item, list: tests, group: 'lol' }">
         <el-table-column v-if="checkedtests.indexOf(item.key) > -1" :key="item.id" :label="item.label">
           <div v-if="item.children">
             <el-table-column v-for="_item in item.children" :key="_item.id" :label="_item.label" :prop="_item.key" >
@@ -357,12 +387,12 @@ export const Template = (args, { argTypes }) => ({
     <el-checkbox-group v-model="checkedtests" style="display:flex;flex-direction: column;" @change="key++">
       <el-checkbox
         class="bar"
-        v-for="(city, index) in tests"
-        :label="city.key"
-        :key="city.key"
-        v-drag="{ item: city, list: tests, group: 'lol' }"
+        v-for="(item, index) in tests"
+        :label="item.key"
+        :key="item.key"
+        v-drag="{ item: item, list: tests, group: 'lol' }"
       >
-        {{ city.label }}
+        {{ item.label }}
         <el-button type="text" @click="handleUp(index)" v-show="index > 0">
           up
         </el-button>
@@ -379,9 +409,3 @@ export const Template = (args, { argTypes }) => ({
   `
 })
 ```
-
-<Story
-  name="dem2o"
->
-  {Template.bind({})}
-</Story>
