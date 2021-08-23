@@ -1,0 +1,46 @@
+import { Meta, Canvas, Story, ArgsTable } from "@storybook/addon-docs/blocks"
+
+import LqDialogHistory from "../../src/components/LqDialogHistory"
+
+<Meta title="第三方组件/日志弹窗" component={LqDialogHistory} argTypes={{}} />
+
+export const Template = (args, { argTypes }) => ({
+  props: Object.keys(argTypes),
+  components: { LqDialogHistory },
+  data() {
+    return {
+      visible: false
+    }
+  },
+  methods: {},
+  template: ` 
+  <div>
+    <button @click="visible = true">查看日志</button>
+    <lq-dialog-history v-model="visible" v-bind="$props" />
+  </div>
+`
+})
+
+# lq-dialog-history
+
+点击查看日志
+
+## 可编辑
+
+<Canvas>
+<Story
+  name="默认"
+  args={{
+    historyTable: Array.from({ length: 10 }, (_, k) => ({
+      realName: "张" + k,
+      createTime: new Date().toString().slice(4, 16),
+      content: "今天处暑"
+    }))
+  }}
+>
+  {Template.bind({})}
+</Story>
+</Canvas>
+
+<ArgsTable story="默认" />
+
