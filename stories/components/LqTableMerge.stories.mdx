@@ -1,0 +1,117 @@
+import { Meta, Canvas, Story, ArgsTable } from "@storybook/addon-docs/blocks"
+
+import LqTableMerge from "../../src/components/LqTableMerge"
+
+<Meta title="组件/表格合并" component={LqTableMerge} argTypes={{}} />
+
+export const Template = (args, { argTypes }) => ({
+  props: Object.keys(argTypes),
+  components: { LqTableMerge },
+  data() {
+    return {
+      tableData: [
+        {
+          country: '中国',
+          child: [
+            {
+              city: '北京',
+            },
+            {
+              city: '上海',
+            }
+          ]
+        },
+        {
+          country: '美国',
+          child: [
+            {
+              city: '纽约',
+            },
+            {
+              city: '洛杉矶',
+            }
+          ]
+        }
+      ]
+    }
+  },
+  methods: {
+    listDeal(){
+      return this.tableData.map(item => item.child.map(_item => ({...item, ..._item}))).flat()
+    }
+},
+template: ` 
+  <lq-table-merge>
+    <el-table 
+      border
+      slot-scope="{ objSpanMethod, mergeTableRow}" 
+      :data="mergeTableRow(listDeal(tableData), ['country'])" 
+      :span-method="objSpanMethod"> 
+      <el-table-column prop="country" label="国家"/>
+      <el-table-column prop="city" label="城市"/>
+    </el-table>
+  </lq-table-merge> 
+`
+});
+
+# lq-table-merge
+
+处理合并的表格数据，`mergeTableRow`这个方法传入一个扁平化后的数组和要合并的key值数组
+
+## 可编辑
+
+<Story name="默认" args={{}}>
+  {Template.bind({})}
+</Story>
+
+```js
+export const Template = (args, { argTypes }) => ({
+  props: Object.keys(argTypes),
+  components: { LqTableMerge },
+  data() {
+    return {
+      tableData: [
+        {
+          country: '中国',
+          child: [
+            {
+              city: '北京',
+            },
+            {
+              city: '上海',
+            }
+          ]
+        },
+        {
+          country: '美国',
+          child: [
+            {
+              city: '纽约',
+            },
+            {
+              city: '洛杉矶',
+            }
+          ]
+        }
+      ]
+    }
+  },
+  methods: {
+    listDeal(){
+      return this.tableData.map(item => item.child.map(_item => ({...item, ..._item}))).flat()
+    }
+},
+template: ` 
+  <lq-table-merge>
+    <el-table 
+      border
+      slot-scope="{ objSpanMethod, mergeTableRow}" 
+      :data="mergeTableRow(listDeal(tableData), ['country'])" 
+      :span-method="objSpanMethod"> 
+      <el-table-column prop="country" label="国家"/>
+      <el-table-column prop="city" label="城市"/>
+    </el-table>
+  </lq-table-merge> 
+`
+});
+```
