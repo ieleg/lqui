@@ -1,0 +1,98 @@
+import { Meta, Canvas, Story, ArgsTable } from "@storybook/addon-docs/blocks"
+
+import LqSwiper from "../../src/components/LqSwiper"
+
+<Meta title="组件/swiper" component={LqSwiper} 
+    argTypes={{
+    type: {
+      name: "type",
+      options: ["step", "auto"],
+      control: 'radio',
+      table: {
+        defaultValue: {
+          summary: "step"
+        },
+        type: {
+          summary: "两种滑动方式",
+          detail: "step为步进， auto为自适应滚，每次滚当前展示长度"
+        }
+      }
+    }
+  }}
+ />
+
+export const Template = (args, { argTypes }) => ({
+  props: Object.keys(argTypes),
+  components: { LqSwiper },
+  data() {
+    return {
+      visible: false
+    }
+  },
+  template:`
+    <div style="width: 520px; overflow: hidden">
+      <lq-swiper v-bind="$props" v-model="visible">
+        <template #left><</template>
+        <template #right>></template>
+        <template v-slot="{ item }">
+          <img :src="item.src" style="height: 80%; width: 90%"/>
+        </template>
+      </lq-swiper>
+    </div>
+    `
+})
+
+# lq-swiper
+
+<Canvas>
+  <Story
+    name="默认"
+    args={{
+      type: "step",
+    }}
+  >
+    {Template.bind({})}
+  </Story>
+</Canvas>
+
+## 可编辑
+
+```js
+export const Template = (args, { argTypes }) => ({
+  props: Object.keys(argTypes),
+  components: { LqSwiper },
+  data() {
+    return {
+      visible: false
+    }
+  },
+  template:`
+    <div style="width: 520px; overflow: hidden">
+      <lq-swiper v-bind="$props" v-model="visible">
+        <template #left><</template>
+        <template #right>></template>
+        <template v-slot="{ item }">
+          <img :src="item.src" style="height: 100%; width: 100%"/>
+        </template>
+      </lq-swiper>
+    </div>
+    `
+})
+```
+  <Story
+    name="自由编辑"
+    args={{
+      type: "step",
+      list: [
+        {src: 'https://fakeimg.pl/625x375/F11336/FFF/?font=noto&text=正恩'},
+        {src: 'https://fakeimg.pl/625x375/F11336/FFF/?font=noto&text=川普'},
+        {src: 'https://fakeimg.pl/625x375/F11336/FFF/?font=noto&text=近平'},
+        {src: 'https://fakeimg.pl/625x375/F11336/FFF/?font=noto&text=锦涛'},
+        {src: 'https://fakeimg.pl/625x375/F11336/FFF/?font=noto&text=家宝'}
+      ]
+    }}
+  >
+    {Template.bind({})}
+  </Story>
+
+<ArgsTable story="自由编辑" />

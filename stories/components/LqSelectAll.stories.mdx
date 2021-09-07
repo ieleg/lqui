@@ -1,0 +1,68 @@
+import { Meta, Canvas, Story, ArgsTable } from "@storybook/addon-docs/blocks"
+
+import LqSelectAll from "../../src/components/LqSelectAll"
+
+<Meta title="第三方组件/多选全选" component={LqSelectAll} argTypes={{}} />
+
+export const Template = (args, { argTypes }) => ({
+  props: Object.keys(argTypes),
+  components: { LqSelectAll },
+  data() {
+    return {
+      data: []
+    }
+  },
+  methods: {},
+  template: ` 
+  <div>
+    <lq-select-all v-model="data" v-bind="$props" />
+  </div>
+`
+})
+
+# lq-select-all
+
+## 默认
+我突然释怀的笑，笑声缠绕半山腰
+<Canvas>
+  <Story
+    name="默认"
+    args={{
+      options: [1, 23, 4, 5, 6, 7, 1234]
+    }}
+  >
+    {Template.bind({})}
+  </Story>
+</Canvas>
+
+## 对象数组
+战死一棵松，少林武当功，不动不摇坐如钟，中华有神功
+<Canvas>
+<Story
+  name="对象数组"
+  args={{
+    labelKey: "name",
+    valueKey: "id",
+    options: [
+      {
+        id: 1,
+        name: '武当',
+        user: '三丰'
+      },
+      {
+        id: 12,
+        name: '少林',
+        user: '达摩'
+      }, 
+      {
+        id: 13,
+        name: '昆仑',
+        user: '何太冲'
+      }
+    ]
+}}
+> {Template.bind({})}
+</Story>
+</Canvas>
+
+<ArgsTable story="对象数组" />
