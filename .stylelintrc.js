@@ -8,7 +8,7 @@ module.exports = {
   plugins: ["stylelint-order", "stylelint-scss"],
   rules: {
     // css2空格缩进
-    indentation: 4,
+    indentation: 2,
     // 指定单位的大小写
     "unit-case": null,
     "no-empty-source": null,
