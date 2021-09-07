@@ -95,7 +95,7 @@ export const Template = (args, { argTypes }) => ({
       tests: [
         { id: 1, label: "装备", key: "name" , disable: true},
         { id: 2, label: "价格", key: "price" },
-        { id: 4, label: "操作", key: "edit" },
+        { id: 4, label: "操作", key: "edit", unDrag: true},
         {
           id: 3,
           label: "攻击",
@@ -203,7 +203,7 @@ export const Template = (args, { argTypes }) => ({
 })
 
 # v-drag
-可以拖动数组元素,改变数组内部顺序
+可以拖动数组元素,改变数组内部顺序, 数组中元素若包含`unDrag`则不可移动
 
 ```js
 export const Template = (args, { argTypes }) => ({
@@ -307,7 +307,7 @@ export const Template = (args, { argTypes }) => ({
       tests: [
         { id: 1, label: "装备", key: "name", disable: true },
         { id: 2, label: "价格", key: "price" },
-        { id: 4, label: "操作", key: "edit" },
+        { id: 4, label: "操作", key: "edit", unDrag: true },
         {
           id: 3,
           label: "攻击",

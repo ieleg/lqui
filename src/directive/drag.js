@@ -87,6 +87,7 @@ export default function (Vue, options) {
   let Current = null
 
   function handleDragStart(e) {
+    console.log(e)
     const el = getBlockEl(e.target)
     const key = el.getAttribute("drag_group")
     const drag_key = el.getAttribute("drag_key")
@@ -142,9 +143,8 @@ export default function (Vue, options) {
     const drag_key = el.getAttribute("drag_key")
     const DDD = dragData.new(key)
     const item = DDD.KEY_MAP[drag_key]
-
     if (item === Current.item) return
-
+    if (item.unDrag) return
     const indexTo = DDD.List.indexOf(item)
     const indexFrom = DDD.List.indexOf(Current.item)
 
@@ -238,7 +238,7 @@ export default function (Vue, options) {
     if (list && DDD.List !== list) {
       DDD.List = list
     }
-    el.setAttribute("draggable", "true")
+    if (!item.unDrag) el.setAttribute("draggable", "true")
     el.setAttribute("drag_group", binding.value.group)
     el.setAttribute("drag_block", binding.value.group)
     el.setAttribute("drag_key", drag_key)
