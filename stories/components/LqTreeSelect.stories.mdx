@@ -1,0 +1,121 @@
+import { Meta, Canvas, Story, ArgsTable } from "@storybook/addon-docs/blocks"
+
+import LqTreeSelect from "../../src/components/LqTreeSelect"
+
+import { tree } from "../mock.js"
+
+<Meta title="第三方组件/树形选择" component={LqTreeSelect} argTypes={{}} />
+
+export const Template = (args, { argTypes }) => ({
+  props: Object.keys(argTypes),
+  components: { LqTreeSelect },
+  data() {
+    return {
+      opt: ["0"]
+    }
+  },
+  template:
+    '<div style="wsanguo_idth: 420px"><lq-tree-select v-bind="$props" v-model="opt"/>bind id:{{opt}}</div>'
+})
+
+export const Template2 = (args, { argTypes }) => ({
+  props: Object.keys(argTypes),
+  components: { LqTreeSelect },
+  data() {
+    return {
+      opt: "1"
+    }
+  },
+  template:
+    '<div style="wsanguo_idth: 420px"><lq-tree-select v-bind="$props" v-model="opt"/>bind id:{{opt}}</div>'
+})
+
+# LqTreeSelect
+
+树形下拉选择
+
+## 默认
+
+设置`multiple`为`false`使其单选
+
+<Canvas>
+  <Story
+    name="默认"
+    args={{
+      multiple: false,
+      justCheckLeaf: true,
+      defaultProps: {
+        children: "child",
+        label: "name"
+      },
+      nodeKey: "sanguo_id",
+      checkedKeys: ["曹操"],
+      data: tree
+    }}
+  >
+    {Template2.bind({})}
+  </Story>
+</Canvas>
+
+## 多选
+
+设置`justCheckLeaf`为`true`使其多选时只包括最末节点
+
+<Story
+  name="多选"
+  args={{
+    multiple: true,
+    justCheckLeaf: true,
+    defaultProps: {
+      children: "child",
+      label: "name",
+    },
+    nodeKey: "sanguo_id",
+    checkedKeys: ["曹操"],
+    data: tree
+  }}
+>
+  {Template.bind({})}
+</Story>
+
+设置`justCheckLeaf`为`false`使其多选时包括全部节点
+
+<Story
+  name="多选2"
+  args={{
+    multiple: true,
+    justCheckLeaf: false,
+    defaultProps: {
+      children: "child",
+      label: "name",
+    },
+    nodeKey: "sanguo_id",
+    checkedKeys: ["曹操"],
+    data: tree
+  }}
+>
+  {Template.bind({})}
+</Story>
+
+## 可编辑
+
+<Canvas>
+  <Story
+    name="自由编辑"
+    args={{
+      multiple: true,
+      justCheckLeaf: true,
+      defaultProps: {
+        children: "child",
+        label: "name"
+      },
+      nodeKey: "sanguo_id",
+      checkedKeys: ["曹操"],
+      data: tree
+    }}
+  >
+    {Template.bind({})}
+  </Story>
+</Canvas>
+
+<ArgsTable story="自由编辑" />
