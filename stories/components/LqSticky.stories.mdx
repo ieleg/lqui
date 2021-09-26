@@ -1,0 +1,47 @@
+import { Meta, Canvas, Story, ArgsTable } from "@storybook/addon-docs/blocks"
+
+import LqSticky from "../../src/components/LqSticky"
+
+<Meta title="组件/sticky" component={LqSticky} argTypes={{}} />
+
+export const Template = (args, { argTypes }) => ({
+  props: Object.keys(argTypes),
+  components: { LqSticky },
+  data() {
+    return {
+      visible: false
+    }
+  },
+  methods: {},
+  template: ` 
+  <div>
+    <ul>
+      <li v-for="item in Array.from({length: 20})">1 </li>
+      <lq-sticky v-bind="$props">
+        <li> test</li>
+      </lq-sticky>
+      <li v-for="item in Array.from({length: 20})">1 </li>
+    </ul>
+  </div>
+`
+})
+
+# lq-dialog-history
+
+点击查看日志
+
+## 可编辑
+
+<Canvas>
+<Story
+  name="默认"
+  args={{
+
+  }}
+>
+  {Template.bind({})}
+</Story>
+</Canvas>
+
+<ArgsTable story="默认" />
+
