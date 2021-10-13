@@ -1,0 +1,29 @@
+import { Meta, Canvas, Story, ArgsTable } from "@storybook/addon-docs/blocks"
+import ttt from "../../src/components/tt"
+
+<Meta title="第三方组件/long" component={ ttt } argTypes={{}} />
+
+export const Template = (args, { argTypes }) => ({
+  props: Object.keys(argTypes),
+  components: { ttt },
+  data() {
+    return {
+      visible: false
+    }
+  },
+  template: `<div><ttt /></div>`
+})
+
+# ttt
+
+单行文本条，纯展示，溢出省略，props 为 text 数组，每行以 index 分割
+
+## 可编辑
+
+<Canvas>
+  <Story name="d" args={{}}>
+    {Template.bind({})}
+  </Story>
+</Canvas>
+
+<ArgsTable story="d" />
