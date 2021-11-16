@@ -1,0 +1,144 @@
+import { Meta, Canvas, Story, ArgsTable } from '@storybook/addon-docs/blocks';
+
+import LqEeSelect from '../../src/components/LqEEBase/select.vue';
+
+<Meta title="EE新筛选/select" component={LqEeSelect} argTypes={{}} />
+
+export const Template = (args, { argTypes }) => ({
+  props: Object.keys(argTypes),
+  components: { LqEeSelect },
+  data() {
+    return {
+      data: '',
+      key: 0
+    };
+  },
+  watch: {
+    data: {
+      handler(e) {
+        this.key ++
+      }
+    }
+  },
+  template: '<div style="width: 620px; display: flex; gap: 5px" ><lq-ee-select v-bind="$props" v-model="data" /> <lq-ee-select v-bind="$props" v-model="data"/></div>'
+});
+
+export const Template2 = (args, { argTypes }) => ({
+  props: Object.keys(argTypes),
+  components: { LqEeSelect },
+  data() {
+    return {
+      data: '',
+      remote: true,
+      options: [],
+      loading: false,
+    };
+  },
+  methods: {
+    querySearch(st) {
+      console.log(this._options);
+      if(st) {
+        this.loading = true
+        setTimeout(() => {
+          this.loading = false
+          this.options = ['西瓜', '西瓜2', '西瓜3',' 西瓜4'].filter(item => {
+              return item.toLowerCase()
+                .indexOf(st.toLowerCase()) > -1
+            });
+        }, 300);
+      }
+    }
+  },
+  template: '<div style="width: 420px"><lq-ee-select :options="options" :remote-method="querySearch" :remote="remote" :loading="loading" v-bind="$props" v-model="data"/></div>'
+});
+
+# LqEeSelect
+ee select类筛选 
+
+## 单选
+<Canvas>
+  <Story
+    name="单选不带前端模糊搜索"
+    args={{
+      text: "水果1不带前端模糊搜索",
+      options: ['南瓜','一个很长的水果哈哈哈哈哈哈哈哈',103].concat(Array.from({length: 20} ,(_, k) => '北瓜'+ k )), 
+      clearable: true, 
+      multiple: false,
+      filterable: false
+    }}
+  >
+    {Template.bind({})}
+  </Story>
+    <Story
+    name="单选带前端模糊搜索"
+    args={{
+      text: "水果2带前端模糊搜索",
+      options: ['南瓜','一个很长的水果哈哈哈哈哈哈哈哈',103].concat(Array.from({length: 20} ,(_, k) => '北瓜'+ k )), 
+      clearable: true, 
+    }}
+  >
+    {Template.bind({})}
+  </Story>
+</Canvas>
+
+## 单选后端模糊搜索
+输入西瓜
+<Canvas>
+  <Story
+    name="单选后端模糊搜索"
+    args={{
+      text: "水果3",
+      clearable: true, 
+      multiple: false,
+    }}
+  >
+    {Template2.bind({})}
+  </Story>
+</Canvas>
+
+## 多选
+<Canvas>
+  <Story
+    name="多选"
+    args={{
+      text: "蔬菜",
+      options: ['黄瓜','一个很长的蔬菜哈哈哈哈哈哈哈哈',103].concat(Array.from({length: 20} ,(_, k) => '青菜'+ k )), 
+      clearable: true, 
+      multiple: true
+    }}
+  >
+    {Template.bind({})}
+  </Story>
+</Canvas>
+
+## 多选后端模糊搜索
+输入西瓜
+<Canvas>
+  <Story
+    name="多选后端模糊搜索"
+    args={{
+      text: "水果多选",
+      clearable: true, 
+      multiple: true,
+    }}
+  >
+    {Template2.bind({})}
+  </Story>
+</Canvas>
+
+## 可编辑
+<Canvas>
+  <Story
+    name="自由编辑"
+    args={{
+      text: "随便写",
+      options: ['猪八戒','一个很长的字段哈哈哈哈哈哈哈哈',103].concat(Array.from({length: 20} ,(_, k) => k )), 
+      clearable: true, 
+      multiple: true,
+    }}
+  >
+    {Template.bind({})}
+  </Story>
+</Canvas>
+
+<ArgsTable story="自由编辑" />
