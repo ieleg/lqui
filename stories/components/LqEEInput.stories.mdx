@@ -1,0 +1,47 @@
+import { Meta, Canvas, Story, ArgsTable } from '@storybook/addon-docs/blocks';
+
+import LqEeInput from '../../src/components/LqEEBase/input.vue';
+
+<Meta title="EE新筛选/input" component={LqEeInput} argTypes={{}} />
+
+export const Template = (args, { argTypes }) => ({
+  props: Object.keys(argTypes),
+  components: { LqEeInput },
+  data() {
+    return {
+      data: '',
+    };
+  },
+  template: '<div style="width: 620px; display: flex; gap: 5px" ><lq-ee-input v-bind="$props" v-model="data" /> <lq-ee-input v-bind="$props" v-model="data"/></div>'
+});
+
+# LqEeInput
+ee input类筛选 
+
+## 单选
+<Canvas>
+  <Story
+    name="输入"
+    args={{
+      text: "活动名称",
+    }}
+  >
+    {Template.bind({})}
+  </Story>
+</Canvas>
+
+## 可编辑
+<Canvas>
+  <Story
+    name="自由编辑"
+    args={{
+      text: "随便写",
+      placeholder: '请输入',
+      maxlength: 5
+    }}
+  >
+    {Template.bind({})}
+  </Story>
+</Canvas>
+
+<ArgsTable story="自由编辑" />

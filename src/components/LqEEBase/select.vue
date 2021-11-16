@@ -292,6 +292,20 @@ export default {
   flex-wrap: nowrap;
 }
 
+::v-deep .el-tag.el-tag {
+  background: #eff1f9;
+  border-radius: 2px;
+  color: #252e40;
+
+  &:hover {
+    background: #e8ecff;
+
+    .el-tag__close.el-icon-close::before {
+      background: #e8ecff;
+    }
+  }
+}
+
 ::v-deep .el-tag.el-tag--info:nth-child(1) {
   position: relative;
   overflow: hidden;
@@ -309,12 +323,15 @@ export default {
   transition: all.3s;
 
   &::before {
-    background: #f4f4f5;
+    border: none;
+    background: #eff1f9;
+    border-radius: 0;
+    transform: translate(0, 0);
   }
 
   &:hover {
     color: rgb(100, 93, 93);
-    transform: scale(0.9);
+    transform: scale(0.76);
   }
 }
 

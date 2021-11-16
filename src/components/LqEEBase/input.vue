@@ -1,7 +1,7 @@
 <template>
   <div :class="['base']">
     <div ref="textRef" class="base-text" @click="handleInitClick">
-      {{ text || "dasdasd" }}
+      {{ text }}
     </div>
     <transition name="fade" mode="out-in" :duration="100">
       <div
@@ -13,25 +13,14 @@
         <i class="el-icon-caret-bottom" />
       </div>
       <div v-else-if="status === 'query'" key="query" class="base-query">
-        <el-select
-          ref="selectRef"
+        <el-input
+          ref="inputRef"
           v-model="bindValue"
-          :style="selectStyle"
-          v-bind="$props"
-          collapse-tags
           size="mini"
-          filterable
-          @clear="handleClear"
-          @change="change"
-          @visible-change="handleChange"
-        >
-          <el-option
-            v-for="item in options"
-            :key="valueCompute(item)"
-            :label="labelCompute(item)"
-            :value="valueCompute(item)"
-          />
-        </el-select>
+          v-bind="$props"
+          @keyup.enter.native="handleQuery"
+          @blur="handleQuery"
+        />
       </div>
       <div
         v-else
@@ -55,38 +44,16 @@
 <script>
 export default {
   props: {
-    ...[
-      "clearable",
-      "value-key",
-      "disabled",
-      "multiple",
-      "remote",
-      "remote-method",
-      "loading"
-    ].reduce((pre, cur) => {
+    ...["disabled", "placeholder", "maxlength"].reduce((pre, cur) => {
       pre[cur] = {}
       return pre
     }, {}),
-    filterable: {
-      type: Boolean,
-      default: true
-    },
     value: {
+      type: String,
+      default: "",
       requied: true
     },
     text: {
-      type: String,
-      default: ""
-    },
-    options: {
-      type: Array,
-      default: () => []
-    },
-    labelKey: {
-      type: String,
-      default: ""
-    },
-    valueKey: {
       type: String,
       default: ""
     }
@@ -120,17 +87,6 @@ export default {
           return item
         }
       }
-    },
-    selectStyle() {
-      if (!this.multiple && this.singleNoFuzzy) {
-        return {
-          opacity: 0
-        }
-      } else {
-        return {
-          opacity: 1
-        }
-      }
     }
   },
 
@@ -142,9 +98,9 @@ export default {
   methods: {
     change() {
       this.$nextTick(() => {
-        if (this.$refs.selectRef && this.$refs.selectRef.$children.length > 2) {
-          const width = this.$refs.selectRef.$children[2].$el.clientWidth
-          this.$refs.selectRef.$children[0].$el.style.width = width + 100 + "px"
+        if (this.$refs.inputRef && this.$refs.inputRef.$children.length > 2) {
+          const width = this.$refs.inputRef.$children[2].$el.clientWidth
+          this.$refs.inputRef.$children[0].$el.style.width = width + 100 + "px"
         }
       })
     },
@@ -170,17 +126,21 @@ export default {
           setTimeout(() => {
             const offect = this.$refs.textRef.clientWidth
             console.log(offect, this.$refs.textRef)
-            this.$refs.selectRef.$children[1].$el.style.transform = `translateX(-${offect}px)`
+            this.$refs.inputRef.$children[1].$el.style.transform = `translateX(-${offect}px)`
           }, 150)
         }
         setTimeout(() => {
-          this.$refs.selectRef.focus()
+          this.$refs.inputRef.focus()
         }, 150)
       }
     },
     handleQuery() {
       if (this.status === "query") {
-        this.status = "tag"
+        if (this.bindValue) {
+          this.status = "tag"
+        } else {
+          this.handleClear()
+        }
       }
     },
     handleTag() {
@@ -188,7 +148,7 @@ export default {
         this.singleNoFuzzy = false
         this.status = "query"
         setTimeout(() => {
-          this.$refs.selectRef.focus()
+          this.$refs.inputRef.focus()
         }, 150)
       }
     },
@@ -207,19 +167,38 @@ export default {
   display: flex;
   height: 28px;
   align-items: center;
-  gap: 5px;
+  color: #586278;
+  font-size: 12px;
 
   &-text {
+    position: relative;
+    z-index: 34;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px;
     cursor: pointer;
-  }
+    gap: 5px;
 
-  &-icon {
-    cursor: pointer;
+    &::after {
+      position: absolute;
+      z-index: -1;
+      width: 100%;
+      height: 100%;
+      content: "";
+      transition: all 0.3s;
+    }
+
+    &:hover {
+      &::after {
+        background: #f5f7fe;
+        border-radius: 2px;
+      }
+    }
   }
 
   &-query {
-    min-width: 100px;
-    max-width: 120px;
+    margin-left: 5px;
     transition: all 3s;
   }
 
@@ -227,17 +206,18 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-left: 5px;
     cursor: pointer;
   }
 }
 
 ::v-deep .el-input {
-  width: 135px;
+  // width: 135px;
   transition: width 0.3s;
 }
 
 ::v-deep .el-input__inner {
-  border: 1px solid transparent;
+  border: 1px solid #dae5fd;
 }
 
 ::v-deep .el-select:hover .el-input__inner {
@@ -253,12 +233,26 @@ export default {
   content: "\e78f";
 }
 
-::v-deep .el-icon-circle-close::before {
-  content: "\e6db";
+::v-deep .el-icon-close::before {
+  content: "\e78c";
 }
 
 ::v-deep .el-select__tags {
   flex-wrap: nowrap;
+}
+
+::v-deep .el-tag.el-tag {
+  background: #eff1f9;
+  border-radius: 2px;
+  color: #252e40;
+
+  &:hover {
+    background: #e8ecff;
+
+    .el-tag__close.el-icon-close::before {
+      background: #e8ecff;
+    }
+  }
 }
 
 ::v-deep .el-tag.el-tag--info:nth-child(1) {
@@ -273,17 +267,24 @@ export default {
 
 ::v-deep .el-tag__close.el-icon-close {
   position: absolute;
-  top: 3px;
+  top: 2px;
   right: 0;
   transition: all.3s;
 
   &::before {
-    background: #f4f4f5;
+    border: none;
+    background: #eff1f9;
+    border-radius: 0;
+    transform: translate(0, 0);
   }
 
   &:hover {
     color: rgb(100, 93, 93);
-    transform: scale(0.9);
+    transform: scale(0.76);
+
+    &::before {
+      content: "\e6db";
+    }
   }
 }
 
@@ -314,6 +315,13 @@ export default {
     background-color: #f6f8ff;
     color: #213182;
     font-weight: normal;
+  }
+}
+
+.cart {
+  ::v-deep input {
+    caret-color: #fff;
+    color: #333;
   }
 }
 </style>
