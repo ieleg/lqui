@@ -1,7 +1,9 @@
 <template>
   <div :class="['base']">
     <div ref="textRef" class="base-text" @click="handleInitClick">
-      {{ text || "dasdasd" }}
+      <span :class="{ 'base-text-query': status === 'query' }">
+        {{ text }}
+      </span>
       <i v-if="singleNoFuzzy" class="el-icon-caret-bottom" />
 
       <i v-if="status === 'init'" class="el-icon-caret-bottom" />
@@ -41,11 +43,12 @@
     >
       <el-tag
         closable
+        :class="{ select: !clearable }"
         type="info"
         size="mini"
         @close="handleClear"
       >
-        {{ bindValue }}
+        {{ checkValue }}
       </el-tag>
     </div>
     <!-- <div></div> -->
@@ -75,7 +78,8 @@ export default {
     },
     text: {
       type: String,
-      default: ""
+      default: "",
+      requied: true
     },
     options: {
       type: Array,
@@ -99,6 +103,15 @@ export default {
     }
   },
   computed: {
+    checkValue() {
+      if (this.valueKey) {
+        return this.options.find(
+          item => this.bindValue === item[this.valueKey]
+        )[this.labelKey]
+      } else {
+        return this.bindValue
+      }
+    },
     valueCompute() {
       return item => {
         const map = {
@@ -135,16 +148,25 @@ export default {
   watch: {
     bindValue(val) {
       this.$emit("input", val)
+    },
+    value(e) {
+      this.bindValue = e
+      if (!e || e.length === 0) {
+        this.status = "init"
+      } else {
+        this.status = "tag"
+      }
     }
   },
   methods: {
-    change() {
+    change(e) {
       this.$nextTick(() => {
         if (this.$refs.selectRef && this.$refs.selectRef.$children.length > 2) {
           const width = this.$refs.selectRef.$children[2].$el.clientWidth
           this.$refs.selectRef.$children[0].$el.style.width = width + 100 + "px"
         }
       })
+      this.$emit("change", e)
     },
     /**
      * 下拉显隐
@@ -197,16 +219,24 @@ export default {
     handleTag() {
       if (this.status === "tag") {
         this.status = "query"
+        this.singleNoFuzzy = false
         setTimeout(() => {
           this.$refs.selectRef.focus()
         }, 150)
       }
     },
     handleClear() {
+      if (!this.clearable) {
+        this.handleTag()
+        return
+      }
       if (~["query", "tag"].indexOf(this.status)) {
         this.bindValue = null
         this.status = "init"
         this.singleNoFuzzy = false
+        if (this.remote) {
+          this.options.splice(0)
+        }
       }
     }
   }
@@ -230,6 +260,14 @@ export default {
     padding: 6px;
     cursor: pointer;
     gap: 5px;
+
+    & > span {
+      transition: all 0.3s;
+    }
+
+    &-query {
+      color: #172fae;
+    }
 
     &::after {
       position: absolute;
@@ -314,6 +352,12 @@ export default {
   text-align: left;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+::v-deep .el-tag.el-tag--info.select {
+  i::before {
+    content: "\e6df";
+  }
 }
 
 ::v-deep .el-tag__close.el-icon-close {

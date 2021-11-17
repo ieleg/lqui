@@ -1,7 +1,9 @@
 <template>
   <div :class="['base']">
     <div ref="textRef" class="base-text" @click="handleInitClick">
-      {{ text }}
+      <span :class="{ 'base-text-query': status === 'query' }">
+        {{ text }}
+      </span>
     </div>
     <transition name="fade" mode="out-in" :duration="100">
       <div
@@ -61,7 +63,7 @@ export default {
   data() {
     return {
       status: "init",
-      bindValue: null,
+      bindValue: "",
       // 单选且无模糊搜索的标识
       singleNoFuzzy: false
     }
@@ -91,22 +93,15 @@ export default {
   },
 
   watch: {
-    bindValue(val) {
-      this.$emit("input", val)
+    value(e) {
+      this.bindValue = e
+      if (!e) {
+        this.status = "init"
+      }
     }
   },
   methods: {
-    change() {
-      this.$nextTick(() => {
-        if (this.$refs.inputRef && this.$refs.inputRef.$children.length > 2) {
-          const width = this.$refs.inputRef.$children[2].$el.clientWidth
-          this.$refs.inputRef.$children[0].$el.style.width = width + 100 + "px"
-        }
-      })
-    },
     handleChange(e) {
-      console.log("vvssssssssv", e, this.bindValue, this.multiple)
-      console.log(2)
       if (this.multiple) {
         !e &&
           (!this.bindValue || this.bindValue.length === 0) &&
@@ -121,14 +116,6 @@ export default {
     handleInitClick() {
       if (this.status === "init") {
         this.status = "query"
-        if (!this.multiple && !this.filterable) {
-          this.singleNoFuzzy = true
-          setTimeout(() => {
-            const offect = this.$refs.textRef.clientWidth
-            console.log(offect, this.$refs.textRef)
-            this.$refs.inputRef.$children[1].$el.style.transform = `translateX(-${offect}px)`
-          }, 150)
-        }
         setTimeout(() => {
           this.$refs.inputRef.focus()
         }, 150)
@@ -138,6 +125,7 @@ export default {
       if (this.status === "query") {
         if (this.bindValue) {
           this.status = "tag"
+          this.bindValue && this.$emit("input", this.bindValue)
         } else {
           this.handleClear()
         }
@@ -154,8 +142,9 @@ export default {
     },
     handleClear() {
       if (~["query", "tag"].indexOf(this.status)) {
-        this.bindValue = null
+        this.bindValue = ""
         this.status = "init"
+        this.$emit("input", this.bindValue)
       }
     }
   }
@@ -179,6 +168,14 @@ export default {
     padding: 6px;
     cursor: pointer;
     gap: 5px;
+
+    & > span {
+      transition: all 0.3s;
+    }
+
+    &-query {
+      color: #172fae;
+    }
 
     &::after {
       position: absolute;

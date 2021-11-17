@@ -61,10 +61,12 @@ ee select类筛选
     name="单选不带前端模糊搜索"
     args={{
       text: "水果1不带前端模糊搜索",
-      options: ['南瓜','一个很长的水果哈哈哈哈哈哈哈哈',103].concat(Array.from({length: 20} ,(_, k) => '北瓜'+ k )), 
+      options: [{name: '一个很长的水果哈哈哈哈哈哈哈哈'}].concat(Array.from({length: 20} ,(_, k) => ({name: '北瓜'+ k }))), 
       clearable: true, 
       multiple: false,
-      filterable: false
+      filterable: false,
+      labelKey: 'name',
+      valueKey: 'name'
     }}
   >
     {Template.bind({})}
