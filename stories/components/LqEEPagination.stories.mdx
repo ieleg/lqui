@@ -1,0 +1,28 @@
+import { Meta, Canvas, Story, ArgsTable } from '@storybook/addon-docs/blocks';
+
+import LqEePagination from '../../src/components/LqEEBase/pagination.vue';
+
+<Meta title="EE组件/分页" component={LqEePagination} argTypes={{}} />
+
+export const Template = (args, { argTypes }) => ({
+  props: Object.keys(argTypes),
+  components: { LqEePagination },
+  template: '<lq-ee-pagination v-bind="$props" />'
+});
+
+# LqEePagination
+ee 分页
+
+## 单选
+<Canvas>
+  <Story
+    name="默认"
+    args={{
+      total: 50,
+      currentPage: 1,
+      pageSize: 10
+    }}
+  >
+    {Template.bind({})}
+  </Story>
+</Canvas>

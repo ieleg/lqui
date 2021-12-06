@@ -104,7 +104,7 @@ export default {
   },
   computed: {
     checkValue() {
-      if (this.valueKey) {
+      if (this.valueKey && this.options.length) {
         return this.options.find(
           item => this.bindValue === item[this.valueKey]
         )[this.labelKey]
@@ -151,11 +151,12 @@ export default {
     },
     value(e) {
       this.bindValue = e
-      if (!e || e.length === 0) {
-        this.status = "init"
-      } else {
-        this.status = "tag"
-      }
+      if (!this.multiple)
+        if (!e || e.length === 0) {
+          this.status = "init"
+        } else {
+          this.status = "tag"
+        }
     }
   },
   methods: {
@@ -382,31 +383,6 @@ export default {
 ::v-deep .el-select .el-input.is-focus .el-input__inner {
   border: 1px solid #dae5fd;
   border-radius: 2px;
-}
-
-::v-deep .el-select-dropdown.is-multiple .el-select-dropdown__item.selected {
-  background-color: #f6f8ff;
-  color: #213182;
-}
-
-::v-deep .el-select-dropdown.is-multiple,
-.el-select-dropdown {
-  font-size: 12px;
-
-  .el-select-dropdown__empty {
-    font-size: 12px;
-  }
-
-  .el-select-dropdown__item {
-    padding: 0 12px;
-    font-size: 12px;
-  }
-
-  .el-select-dropdown__item.selected {
-    background-color: #f6f8ff;
-    color: #213182;
-    font-weight: normal;
-  }
 }
 
 .cart {

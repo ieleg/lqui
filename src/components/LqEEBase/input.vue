@@ -4,43 +4,34 @@
       <span :class="{ 'base-text-query': status === 'query' }">
         {{ text }}
       </span>
+      <i v-if="status === 'init'" class="el-icon-caret-bottom" />
     </div>
-    <transition name="fade" mode="out-in" :duration="100">
-      <div
-        v-if="status === 'init'"
-        key="init"
-        class="base-icon"
-        @click="handleInitClick"
+    <div v-if="status === 'query'" key="query" class="base-query">
+      <el-input
+        ref="inputRef"
+        v-model="bindValue"
+        size="mini"
+        v-bind="$props"
+        class="query-input"
+        @keyup.enter.native="handleQuery"
+        @blur="handleQuery"
+      />
+    </div>
+    <div
+      v-if="status === 'tag'"
+      key="tag"
+      class="base-tag"
+      @click="handleTag"
+    >
+      <el-tag
+        closable
+        type="info"
+        size="mini"
+        @close="handleClear"
       >
-        <i class="el-icon-caret-bottom" />
-      </div>
-      <div v-else-if="status === 'query'" key="query" class="base-query">
-        <el-input
-          ref="inputRef"
-          v-model="bindValue"
-          size="mini"
-          v-bind="$props"
-          @keyup.enter.native="handleQuery"
-          @blur="handleQuery"
-        />
-      </div>
-      <div
-        v-else
-        key="tag"
-        class="base-tag"
-        @click="handleTag"
-      >
-        <el-tag
-          closable
-          type="info"
-          size="mini"
-          @close="handleClear"
-        >
-          {{ bindValue }}
-        </el-tag>
-      </div>
-    </transition>
-    <!-- <div></div> -->
+        {{ bindValue }}
+      </el-tag>
+    </div>
   </div>
 </template>
 <script>
@@ -151,6 +142,21 @@ export default {
 }
 </script>
 
+<style lang="scss">
+.query-input {
+  .el-input__inner {
+    border: 1px solid #dae5fd;
+
+    &:focus {
+      border: 1px solid #dae5fd;
+    }
+  }
+
+  .el-select:hover .el-input__inner {
+    border-color: #dae5fd;
+  }
+}
+</style>
 <style lang="scss" scoped>
 .base {
   display: flex;
@@ -208,26 +214,13 @@ export default {
   }
 }
 
-::v-deep .el-input {
-  // width: 135px;
-  transition: width 0.3s;
-}
-
-::v-deep .el-input__inner {
-  border: 1px solid #dae5fd;
-}
-
-::v-deep .el-select:hover .el-input__inner {
-  border-color: #dae5fd;
-}
-
 ::v-deep .el-input__suffix-inner {
   transition: all 1s;
   // position: absolute;
 }
 
 ::v-deep .el-icon-arrow-up::before {
-  content: "\e78f";
+  transition: all 1s;
 }
 
 ::v-deep .el-icon-close::before {
@@ -256,7 +249,7 @@ export default {
   position: relative;
   overflow: hidden;
   max-width: 90px;
-  padding: 0 16px 0 5px;
+  padding: 0 20px 0 5px;
   text-align: left;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -292,7 +285,6 @@ export default {
 
 ::v-deep .el-select-dropdown.is-multiple .el-select-dropdown__item.selected {
   background-color: #f6f8ff;
-  color: #213182;
 }
 
 ::v-deep .el-select-dropdown.is-multiple,
@@ -310,7 +302,6 @@ export default {
 
   .el-select-dropdown__item.selected {
     background-color: #f6f8ff;
-    color: #213182;
     font-weight: normal;
   }
 }
