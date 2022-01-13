@@ -88,6 +88,8 @@ export default {
       this.bindValue = e
       if (!e) {
         this.status = "init"
+      } else {
+        this.status = "tag"
       }
     }
   },
@@ -259,7 +261,7 @@ export default {
   position: absolute;
   top: 2px;
   right: 0;
-  transition: all.3s;
+  transition: all 0.3s;
 
   &::before {
     border: none;

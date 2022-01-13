@@ -23,6 +23,7 @@
         collapse-tags
         size="mini"
         filterable
+        :placeholder="placeholder"
         @clear="handleClear"
         @change="change"
         @visible-change="handleChange"
@@ -51,7 +52,6 @@
         {{ checkValue }}
       </el-tag>
     </div>
-    <!-- <div></div> -->
   </div>
 </template>
 <script>
@@ -92,26 +92,22 @@ export default {
     valueKey: {
       type: String,
       default: ""
+    },
+    placeholder: {
+      type: String,
+      default: "请选择"
     }
   },
   data() {
     return {
       status: "init",
-      bindValue: null,
+      bindValue: this.multiple ? [] : null,
       // 单选且无模糊搜索的标识
-      singleNoFuzzy: false
+      singleNoFuzzy: false,
+      checkValue: ""
     }
   },
   computed: {
-    checkValue() {
-      if (this.valueKey && this.options.length) {
-        return this.options.find(
-          item => this.bindValue === item[this.valueKey]
-        )[this.labelKey]
-      } else {
-        return this.bindValue
-      }
-    },
     valueCompute() {
       return item => {
         const map = {
@@ -151,12 +147,28 @@ export default {
     },
     value(e) {
       this.bindValue = e
-      if (!this.multiple)
-        if (!e || e.length === 0) {
+      if ((!this.multiple && e) || ~[false, 0].indexOf(e))
+        if (this.valueKey && this.options.length) {
+          this.checkValue = this.options.find(
+            item => e === item[this.valueKey]
+          )[this.labelKey]
+        } else {
+          this.checkValue = e
+        }
+      /* 单选绑定数据若为空或null需将组件状态置init */
+      if (!this.multiple) {
+        if ((!e && !~[false, 0].indexOf(e)) || e.length === 0) {
+          this.singleNoFuzzy = false
           this.status = "init"
         } else {
           this.status = "tag"
         }
+      } else {
+        /* 多选组件非focus状态置空绑定数据 因将其组件状态置为init */
+        if (!e.length && this.status === "query") {
+          this.status = "init"
+        }
+      }
     }
   },
   methods: {
@@ -178,7 +190,7 @@ export default {
       if (this.filterable) {
         !e &&
           (!this.bindValue || this.bindValue.length === 0) &&
-          this.handleClear()
+          this.handleClearForce()
         !e &&
           (this.bindValue || this.bindValue === 0) &&
           !this.multiple &&
@@ -227,12 +239,16 @@ export default {
       }
     },
     handleClear() {
+      console.log(2)
       if (!this.clearable) {
         this.handleTag()
         return
       }
+      this.handleClearForce()
+    },
+    handleClearForce() {
       if (~["query", "tag"].indexOf(this.status)) {
-        this.bindValue = null
+        this.bindValue = this.multiple ? [] : null
         this.status = "init"
         this.singleNoFuzzy = false
         if (this.remote) {
@@ -365,7 +381,7 @@ export default {
   position: absolute;
   top: 2px;
   right: 0;
-  transition: all.3s;
+  transition: all 0.3s;
 
   &::before {
     border: none;
