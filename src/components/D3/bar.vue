@@ -1,10 +1,10 @@
 <template>
-  <div id="line" />
+  <div id="bar" />
 </template>
 
 <script>
 import * as d3 from "d3"
-import { LineChart } from "./tip.js"
+import { BarChart } from "./render.js"
 
 export default {
   props: {
@@ -29,14 +29,10 @@ export default {
         name: "名称" + (k % 2)
       }
     })
-    LineChart(data, {
-      id: "#line",
+    BarChart(data, {
+      id: "#bar",
       x: d => d.x,
-      y: d => d.y,
-      z: d => d.name,
-      yLabel: "y",
-      height: 500,
-      color: "#4a61d9"
+      y: d => d.y
     })
   },
   methods: {
