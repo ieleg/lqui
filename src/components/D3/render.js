@@ -6,10 +6,10 @@ export const BarChart = (
     id,
     width = 600,
     height = 480,
-    margin = [20, 20, 20, 20], // 画布margin 上右下左
+    margin = [20, 20, 20, 30], // 画布margin 上右下左
     xRange = [margin[3], width - margin[1]], // 从左往右 -去margin
     yRange = [height - margin[0], margin[2]], // 从下往上 -去margin
-    xPadding = 0.00000001,
+    xPadding = 0.8,
     xScaleType = d3.scaleBand,
     yScaleType = d3.scaleLinear,
     x = d => d.x,
@@ -18,14 +18,14 @@ export const BarChart = (
 ) => {
   const X = d3.map(data, x)
   const Y = d3.map(data, y)
-  const I = d3.range(X.length)
-
-  const xScale = xScaleType()
-    .domain(d3.extent(X))
-    .range(xRange)
-    .padding(xPadding)
-  const yScale = yScaleType().domain(d3.extent(Y)).range(yRange)
-  const xAxis = d3.axisBottom(xScale)
+  const xDomain = new d3.InternSet(X)
+  const I = d3.range(X.length).filter(i => xDomain.has(X[i]))
+  const xScale = xScaleType().domain(X).range(xRange).padding(xPadding)
+  const yScale = yScaleType()
+    .domain([0, d3.max(Y)])
+    .range(yRange)
+  console.log(d3.max(Y), yScale(-0.2), xScale(0), I)
+  const xAxis = d3.axisBottom(xScale).tickSizeOuter(0).ticks(5, "s")
   const yAxis = d3.axisLeft(yScale)
   const svg = d3
     .create("svg")
@@ -43,7 +43,10 @@ export const BarChart = (
     .selectAll("rect")
     .data(I)
     .join("rect")
-    .attr("x", i => xScale(X[i]))
+    .attr("x", i => {
+      console.log(xScale(X[i]))
+      return xScale(X[i])
+    })
     .attr("y", i => yScale(Y[i]))
     .attr("height", i => yScale(0) - yScale(Y[i]))
     .attr("width", xScale.bandwidth())

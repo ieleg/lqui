@@ -22,9 +22,9 @@ export default {
   },
 
   mounted() {
-    const data = d3.range(-Math.PI * 2, Math.PI * 2, 1 / 256).map((x, k) => {
+    const data = d3.range(-2, 2, 0.02).map((x, k) => {
       return {
-        y: this.fft(k % 2 ? this.n : 0, x),
+        y: Math.abs(Math.sin(x)),
         x: x,
         name: "名称" + (k % 2)
       }
