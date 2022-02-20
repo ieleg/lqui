@@ -1,28 +1,110 @@
 export const barData = [
-  { letter: "A", frequency: 0.08167 },
-  { letter: "B", frequency: 0.01492 },
-  { letter: "C", frequency: 0.02782 },
-  { letter: "D", frequency: 0.04253 },
-  { letter: "E", frequency: 0.12702 },
-  { letter: "F", frequency: 0.02288 },
-  { letter: "G", frequency: 0.02015 },
-  { letter: "H", frequency: 0.06094 },
-  { letter: "I", frequency: 0.06966 },
-  { letter: "J", frequency: 0.00153 },
-  { letter: "K", frequency: 0.00772 },
-  { letter: "L", frequency: 0.04025 },
-  { letter: "M", frequency: 0.02406 },
-  { letter: "N", frequency: 0.06749 },
-  { letter: "O", frequency: 0.07507 },
-  { letter: "P", frequency: 0.01929 },
-  { letter: "Q", frequency: 0.00095 },
-  { letter: "R", frequency: 0.05987 },
-  { letter: "S", frequency: 0.06327 },
-  { letter: "T", frequency: 0.09056 },
-  { letter: "U", frequency: 0.02758 },
-  { letter: "V", frequency: 0.00978 },
-  { letter: "W", frequency: 0.0236 },
-  { letter: "X", frequency: 0.0015 },
-  { letter: "Y", frequency: 0.01974 },
-  { letter: "Z", frequency: 0.00074 }
+  {
+    key: "2019-01",
+    value: "93"
+  },
+  {
+    key: "2019-02",
+    value: "63"
+  },
+  {
+    key: "2019-03",
+    value: "6"
+  },
+  {
+    key: "2019-04",
+    value: "333"
+  },
+  {
+    key: "2019-05",
+    value: "311"
+  },
+  {
+    key: "2019-06",
+    value: "0"
+  },
+  {
+    key: "2019-07",
+    value: "0"
+  },
+  {
+    key: "2019-08",
+    value: "0"
+  },
+  {
+    key: "2019-09",
+    value: "0"
+  },
+  {
+    key: "2019-10",
+    value: "0"
+  },
+  {
+    key: "2019-11",
+    value: "0"
+  },
+  {
+    key: "2019-12",
+    value: "0"
+  },
+  {
+    key: "2020-01",
+    value: "93"
+  },
+  {
+    key: "2020-02",
+    value: "213"
+  },
+  {
+    key: "2020-03",
+    value: "0"
+  },
+  {
+    key: "2020-04",
+    value: "0"
+  },
+  {
+    key: "2020-05",
+    value: "190"
+  },
+  {
+    key: "2020-06",
+    value: "12"
+  },
+  {
+    key: "2020-07",
+    value: "0"
+  },
+  {
+    key: "2020-08",
+    value: "23"
+  },
+  {
+    key: "2020-09",
+    value: "193"
+  },
+  {
+    key: "2020-10",
+    value: "223"
+  },
+  {
+    key: "2020-11",
+    value: "113"
+  },
+  {
+    key: "2020-12",
+    value: "123"
+  },
+  {
+    key: "2021-01",
+    value: "369"
+  },
+  {
+    key: "2021-02",
+    value: "234"
+  },
+  {
+    key: "2021-03",
+    value: "299"
+  }
 ]

@@ -5,6 +5,8 @@
 <script>
 import * as d3 from "d3"
 import { BarChart } from "./render.js"
+import { barData } from "./mock/bar.js"
+
 
 export default {
   props: {
@@ -22,17 +24,17 @@ export default {
   },
 
   mounted() {
-    const data = d3.range(-2, 2, 0.02).map((x, k) => {
+    const data = d3.range(-2, 2, 0.1).map((x, k) => {
       return {
         y: Math.abs(Math.sin(x)),
         x: x,
         name: "名称" + (k % 2)
       }
     })
-    BarChart(data, {
+    BarChart(barData, {
       id: "#bar",
-      x: d => d.x,
-      y: d => d.y
+      x: d => d.key,
+      y: d => +d.value
     })
   },
   methods: {

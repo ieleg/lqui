@@ -7,12 +7,17 @@ import MyBar from '../../src/components/D3/bar.vue';
 export const Template = (args, { argTypes }) => ({
   props: Object.keys(argTypes),
   components: { MyBar },
-  template: `<div style="height: 500px;width:500px"><my-bar v-bind="$props" /></div>`
+  template: `<my-bar v-bind="$props" />`
 });
 
-# linWe-chart
-傅里叶级数fft,观察可得到级数展开越多越趋向方波，且毛刺越少
-## line-chart
+# bar-chart
+当使用 band和 point比例尺时ticks没有作用，但是 axis.tickValues. 和 axis.tickFormat 不受比例尺类型限制
+  
+当x轴为日期的时候，如何让ticks自适应的变化呢？即放大的时候ticks增加，缩放时候ticks减少。
+ticks分段只可分2 5 10及其最小公倍数作为间隔，但是在设置时间ticks的时候5没有生效。
+
+目前是手动调缩放比例然后去设置对应的ticks
+## bar-chart(不显示刷新下)
 <Canvas>
   <Story
     name="默认"
