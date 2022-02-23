@@ -1,5 +1,5 @@
 <template>
-  <div id="brush" />
+  <div id="brush" style="position: relative" />
 </template>
 
 <script>

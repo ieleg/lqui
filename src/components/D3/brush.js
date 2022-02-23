@@ -237,12 +237,16 @@ export function BarChart(
     // .attr("width", xScale.bandwidth())
     .on("mouseover", function (e, d, i) {
       tooltip.style("visibility", "visible")
+      tooltip.select(".tooltip-title").text(`x:${X[d]} y: ${Y[d]}`)
       // .append(tooltipSvg)
 
       d3.select(this).transition().attr("fill", "#000000")
     })
     .on("mousemove", function (e) {
-      tooltip.attr("transform", `translate(${e.pageX + 20}, ${e.pageY - 300})`)
+      tooltip.attr(
+        "transform",
+        `translate(${e.offsetX - width + 10}, ${e.offsetY - height / 2})`
+      )
     })
     .on("mouseout", function (e) {
       tooltip.style("visibility", "hidden")
@@ -281,6 +285,12 @@ export function BarChart(
   tooltip
   tooltip.append("g").attr("transform", "translate(30)").call(tyAxis)
   tooltip.append("g").attr("transform", "translate(30, 170)").call(txAxis)
+  tooltip
+    .append("g")
+    .append("text")
+    .attr("class", "tooltip-title")
+    .attr("transform", "translate(100, 50)")
+    .attr("text-anchor", "middle")
 
   tooltip
     .append("g")
@@ -290,10 +300,12 @@ export function BarChart(
     .attr("stroke", "red")
     .attr("d", line(d3.range(X.length)))
   const node = Object.assign(svg.node(), { value: null })
-  document.body.append(tooltip.node())
+  // document.body.append(tooltip.node())
 
   if (id) {
     document.querySelector(id).append(node)
+    document.querySelector(id).append(tooltip.node())
+
     brushGroup.call(brush.move, [mainWidth / 3, mainWidth])
   } else {
     return node
