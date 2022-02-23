@@ -1,13 +1,13 @@
 import * as d3 from "d3"
 
-export const BarChart = (
+export function BarChart(
   data,
   {
     id,
     width = 400,
     height = 400,
-    margin = [0, 10, 40, 28], // 画布margin 上右下左
-    miniMargin = [0, 40, 0, 28], // 画布margin 上右下左
+    margin = [20, 30, 10, 28], // 画布margin 上右下左
+    miniMargin = [0, 30, 0, 28], // 画布margin 上右下左
     mainHeight = 300,
     miniHeight = height -
       mainHeight -
@@ -15,23 +15,24 @@ export const BarChart = (
       margin[3] -
       miniMargin[0] -
       miniMargin[3],
-    xRange = [margin[3], width - margin[1]], // 从左往右 -去margin
+    mainWidth = width - margin[1] - margin[3],
+    xRange = [0, mainWidth], // 从左往右 -去margin
     yRange = [mainHeight - margin[0], margin[2]], // 从下往上 -去margin
     miniyRange = [miniMargin[2], miniHeight - miniMargin[0]], // 从下往上 -去margin
-    xPadding = 0.6,
+    xPadding = 0.08,
     xScaleType = d3.scaleBand,
     yScaleType = d3.scaleLinear,
     x = d => d.x,
     y = d => d.y,
     color = "#7783d3"
   }
-) => {
+) {
   const minimapPositionTranslate =
     "" +
     miniMargin[3] +
     "," +
     parseFloat(margin[0] + mainHeight + margin[2] + miniMargin[0])
-  const mainWidth = width - margin[1] - margin[3]
+  // const mainWidth = width - margin[1] - margin[3]
   const X = d3.map(data, x)
   const Y = d3.map(data, y)
   const xDomain = new d3.InternSet(X)
@@ -46,10 +47,10 @@ export const BarChart = (
     .domain(d3.extent(X).map(item => new Date(item)))
     .range(xRange)
     .nice()
+  console.log(900, x_time(new Date("2019-03")))
   const xAxis = d3
-    .axisBottom(x_time)
-    .tickFormat(d3.timeFormat("%Y-%m"))
-    // .tickValues(d3.timeDay.range(new Date(2015, 0, 2), new Date(2015, 0, 8), 2))
+    .axisBottom(xScale)
+    .tickFormat(d => d3.timeFormat("%Y-%m")(new Date(d)))
     .tickSizeOuter(0)
   const yAxis = d3.axisLeft(yScale).tickSizeOuter(0)
   // mini area
@@ -74,13 +75,22 @@ export const BarChart = (
     const ticks = width < mainWidth / 3 ? 20 : 10
     d3.selectAll(".bars rect")
       .data(I)
-      .attr("x", i => x_time(new Date(X[i])) - xScale.bandwidth() / 2)
+      // .join("rect")
+      .attr("x", i => xScale(X[i]))
       .attr("y", i => yScale(Y[i]))
       .attr("height", i => yScale(0) - yScale(Y[i]))
       .attr("width", xScale.bandwidth())
+      .attr("fill", color)
+    console.log(xScale.range()[1] - xScale.range()[0])
     svg
       .selectAll(".x-axis")
-      .call(xAxis.ticks(ticks))
+      .call(
+        xAxis.tickValues(
+          xScale.range()[1] - xScale.range()[0] > 1000
+            ? X
+            : X.filter((_, i) => i % 3 === 0)
+        )
+      )
       .selectAll(".tick text")
       .transition()
       .duration(300)
@@ -96,11 +106,12 @@ export const BarChart = (
     .on("touchstart.zoom", null)
     .on("touchmove.zoom", null)
     .on("touchend.zoom", null)
+
   const brush = d3
     .brushX()
     .extent([
       [0, 0],
-      [mainWidth, miniHeight]
+      [mainWidth, miniHeight + 1]
     ])
     .on("brush", brushmove)
   function brushmove(event) {
@@ -125,7 +136,7 @@ export const BarChart = (
     mainXZoom.domain(extentX)
 
     xScale.range([mainXZoom(originalRange[0]), mainXZoom(originalRange[1])])
-    x_time.range([mainXZoom(originalRange[0]), mainXZoom(originalRange[1])])
+    // x_time.range([mainXZoom(originalRange[0]), mainXZoom(originalRange[1])])
     d3.select(".x-axis").call(xAxis)
     console.log(x_time.range(), x_time.domain(), originalRange, extentX)
     update(extentX[1] - extentX[0])
@@ -178,7 +189,8 @@ export const BarChart = (
   svg
     .append("g")
     .attr("class", "x-axis")
-    .attr("transform", `translate(0,${mainHeight})`)
+    .attr("transform", `translate(28,${mainHeight})`)
+    .attr("clip-path", "url(#clip-th)")
     .call(xAxis)
     .selectAll(".tick text")
     .attr("transform", "translate(0,10)rotate(30)")
@@ -198,9 +210,18 @@ export const BarChart = (
     )
     .selectAll(".domain")
     .style("opacity", 0)
+  svg
+    .append("defs")
+    .append("clipPath")
+    .attr("id", "clip-th")
+    .append("rect")
+    .attr("width", mainWidth)
+    .attr("height", mainHeight)
   const bar = svg
     .append("g")
     .attr("class", "bars")
+    .attr("transform", `translate(${margin[3]}, ${margin[0]})`)
+    .attr("clip-path", "url(#clip-th)")
     .attr("fill", color)
     .selectAll("rect")
     .data(I)
@@ -212,39 +233,65 @@ export const BarChart = (
     // .attr("height", i => yScale(0) - yScale(Y[i]))
     // .attr("width", xScale.bandwidth())
     .on("mouseover", function (e, d, i) {
-      tooltip
-        .html(`<div>y: ${Y[d]}</div><div>x: ${X[d]}</div>`)
-        .style("visibility", "visible")
+      tooltip.style("visibility", "visible")
+      // .append(tooltipSvg)
+
       d3.select(this).transition().attr("fill", "#000000")
     })
     .on("mousemove", function (e) {
-      tooltip
-        .style("top", e.pageY - 10 + "px")
-        .style("left", e.pageX + 10 + "px")
+      tooltip.attr("transform", `translate(${e.pageX + 20}, ${e.pageY - 300})`)
     })
     .on("mouseout", function (e) {
-      tooltip.html(``).style("visibility", "hidden")
+      tooltip.style("visibility", "hidden")
       d3.select(this).transition().attr("fill", color)
     })
 
+  // tooltip
+  const txScale = d3
+    .scaleUtc()
+    .range([0, 160])
+    .domain(d3.extent(X).map(item => new Date(item)))
+    .nice()
+  const txAxis = d3
+    .axisBottom(txScale)
+    .ticks(2)
+    // .tickFormat(d3.timeFormat("%Y-%m"))
+    .tickSizeOuter(0)
+  const tyScale = yScale.copy()
+  tyScale.range([170, 30])
+  const tyAxis = d3.axisLeft(tyScale).tickSizeOuter(0)
   const tooltip = d3
-    .select("body")
-    .append("div")
-    .attr("class", "d3-bar-tooltip")
+    .create("svg")
+    .attr("width", 200)
+    .attr("height", 200)
+    .attr("viewBox", [0, 0, 200, 200])
+    .attr("style", "border: 1px solid #000")
+    .attr("class", "d3-tooltip")
     .style("position", "absolute")
-    .style("z-index", "10")
     .style("visibility", "hidden")
-    .style("padding", "10px")
-    .style("background", "rgba(0,0,0,.6)")
-    .style("box-shadow", "0px 12px 30px rgba(227, 229, 247, 0.3)")
-    .style("border-radius", "4px")
-    .style("color", "#fff")
-    .style("font-size", "14px")
-    .text("a simple tooltip")
+    .style("background", "rgba(250,250,251,.6)")
+  const line = d3
+    .line()
+    .curve(d3.curveBasis)
+    .x(i => txScale(new Date(X[i])))
+    .y(i => tyScale(Y[i]))
+  tooltip
+  tooltip.append("g").attr("transform", "translate(30)").call(tyAxis)
+  tooltip.append("g").attr("transform", "translate(30, 170)").call(txAxis)
+
+  tooltip
+    .append("g")
+    .attr("transform", "translate(30)")
+    .append("path")
+    .attr("fill", "none")
+    .attr("stroke", "red")
+    .attr("d", line(d3.range(X.length)))
   const node = Object.assign(svg.node(), { value: null })
-  brushGroup.call(brush.move, [mainWidth / 3, mainWidth])
+  document.body.append(tooltip.node())
+
   if (id) {
     document.querySelector(id).append(node)
+    brushGroup.call(brush.move, [mainWidth / 3, mainWidth])
   } else {
     return node
   }
