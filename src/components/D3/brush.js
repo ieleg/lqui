@@ -114,9 +114,11 @@ export function BarChart(
       [mainWidth, miniHeight + 1]
     ])
     .on("brush", brushmove)
-  function brushmove(event) {
+  function brushmove(event, d) {
     // const extentX = [0, 200]
     const extentX = event.selection
+    // const xDate = d.map(item => d3.timeFormat('%Y-%M')(item))
+    // console.log(event, D);
 
     const selected = miniXScale.domain().filter(i => {
       return (
@@ -124,21 +126,23 @@ export function BarChart(
         miniXScale(i) <= extentX[1] - 1e-2
       )
     })
-    // console.log(event, selected)
-
+    const xDate = []
+    if (selected.length > 1) {
+      xDate.push(...[selected[0], selected[1]])
+    } else {
+      xDate.push(...[selected[0], selected[0]])
+    }
+    console.log(event, xDate)
     d3.select(".miniGroup")
       .selectAll("rect")
       .style("fill", i => {
         return ~selected.indexOf(X[i]) ? "red" : "blue"
       })
-
     let originalRange = mainXZoom.range()
     mainXZoom.domain(extentX)
 
     xScale.range([mainXZoom(originalRange[0]), mainXZoom(originalRange[1])])
-    // x_time.range([mainXZoom(originalRange[0]), mainXZoom(originalRange[1])])
     d3.select(".x-axis").call(xAxis)
-    console.log(x_time.range(), x_time.domain(), originalRange, extentX)
     update(extentX[1] - extentX[0])
   }
 
@@ -158,11 +162,10 @@ export function BarChart(
   brushGroup
     .select(".overlay")
     .each(d => {
-      console.log(d)
+      console.log(123, d)
       return (d.type = "selection")
     })
     .on("mousedown touchstart", brushcenter)
-
   const miniBars = miniGroup.selectAll(".mini-bar").data(I)
   function brushcenter(event, node) {
     let selection = d3.brushSelection(brushGroup.node()),
