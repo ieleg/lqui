@@ -4,7 +4,7 @@ export const render = (
   data,
   {
     id,
-    curve = d3.curveLinear,
+    curve = d3.curveBasis,
     x = d => d.x,
     y = d => d.y,
     marginTop = 20,

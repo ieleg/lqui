@@ -272,6 +272,8 @@ export function BarChart(
     .attr("width", 200)
     .attr("height", 200)
     .attr("viewBox", [0, 0, 200, 200])
+    .attr("style", "max-width: 100%; height: auto; height: intrinsic;")
+
     .attr("style", "border: 1px solid #000")
     .attr("class", "d3-tooltip")
     .style("position", "absolute")

@@ -1,14 +1,4 @@
-export const data = [
-  {
-    key: 0,
-    value: "93"
-  },
-  {
-    key: 2,
-    value: "63"
-  },
-  {
-    key: 4,
-    value: "6"
-  }
-]
+export const data = Array.from({ length: 50 }, (_, k) => ({
+  key: k,
+  value: Math.random() * (k + 1 * 5) + 50
+}))

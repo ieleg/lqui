@@ -133,6 +133,8 @@ export function BarChart(
     .attr("width", width)
     .attr("height", height)
     .attr("viewBox", [0, 0, width, height])
+    .attr("style", "max-width: 100%; height: auto; height: intrinsic;")
+
     .on("mousedown.zoom", null)
     .on("touchstart.zoom", null)
     .on("touchmove.zoom", null)

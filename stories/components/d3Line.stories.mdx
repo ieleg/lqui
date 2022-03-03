@@ -12,6 +12,18 @@ export const Template = (args, { argTypes }) => ({
 
 # linWe-chart
 傅里叶级数fft,观察可得到级数展开越多越趋向方波，且毛刺越少
+
+line的绘制是将一系列离散的点[x,y]通过插值曲线将其串联
+
+
+`curveLinear`： 通过指定的点折现相连
+
+
+`curveBasis`：这种基础的插特点值是连续的两个点相切
+
+
+`curveStepAfter`： 产生一个分段常数函数 (阶梯函数 (opens new window))，由水平和垂直的交替线组成。y 值在 x 值之后发生变化
+
 ## line-chart
 <Canvas>
   <Story

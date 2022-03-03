@@ -11,7 +11,7 @@ export default {
     render(data, {
       id: "#area",
       x: d => d.key,
-      y: d => +d.value
+      y: d => d.value
     })
   }
 }

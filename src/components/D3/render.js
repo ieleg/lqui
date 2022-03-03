@@ -14,7 +14,7 @@ export const BarChart = (
     yScaleType = d3.scaleLinear,
     x = d => d.x,
     y = d => d.y,
-    color = '#7783d3'
+    color = "#7783d3"
   }
 ) => {
   let k = 1
@@ -28,12 +28,12 @@ export const BarChart = (
     .range(yRange)
     .nice()
   const x_time = d3
-  .scaleTime()
-  .domain(d3.extent(X).map(item => new Date(item)))
-  .range(xRange)
-  .nice()
+    .scaleTime()
+    .domain(d3.extent(X).map(item => new Date(item)))
+    .range(xRange)
+    .nice()
   console.log(12, x_time.ticks(2))
-  
+
   console.log(d3.ticks(...d3.extent(xScale.domain()), width / 50))
 
   const xAxis = d3
@@ -47,6 +47,7 @@ export const BarChart = (
     .attr("width", width)
     .attr("height", height)
     .attr("viewBox", [0, 0, width, height])
+    .attr("style", "max-width: 100%; height: auto; height: intrinsic;")
     .call(zoom)
   svg
     .append("g")
@@ -79,7 +80,7 @@ export const BarChart = (
     .data(I)
     .join("rect")
     .attr("x", i => {
-      return x_time(new Date(X[i])) - xScale.bandwidth()/2
+      return x_time(new Date(X[i])) - xScale.bandwidth() / 2
     })
     .attr("y", i => yScale(Y[i]))
     .attr("height", i => yScale(0) - yScale(Y[i]))
@@ -130,15 +131,21 @@ export const BarChart = (
       )
       svg
         .selectAll(".bars rect")
-        .attr("x", i => x_time(new Date(X[i])) - xScale.bandwidth()/2)
+        .attr("x", i => x_time(new Date(X[i])) - xScale.bandwidth() / 2)
         .attr("width", xScale.bandwidth())
-        // xAxis.ticks(width / 50 / event.transform.k)
-      const transform = event.transform.k > 1.2 ? "translate(0,0)rotate(0)" : "translate(15,10)rotate(30)"
+      // xAxis.ticks(width / 50 / event.transform.k)
+      const transform =
+        event.transform.k > 1.2
+          ? "translate(0,0)rotate(0)"
+          : "translate(15,10)rotate(30)"
       const ticks = event.transform.k > 3.5 ? 20 : 10
-      svg.selectAll(".x-axis").call(xAxis.ticks(ticks))
-      .selectAll(".tick text")
-      .transition().duration(300)
-      .attr("transform", transform)
+      svg
+        .selectAll(".x-axis")
+        .call(xAxis.ticks(ticks))
+        .selectAll(".tick text")
+        .transition()
+        .duration(300)
+        .attr("transform", transform)
     }
   }
   const tooltip = d3
