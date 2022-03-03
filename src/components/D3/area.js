@@ -15,7 +15,7 @@ export const render = (
     height = 400,
     xType = d3.scaleLinear,
     yType = d3.scaleLinear,
-    yLabel = "asd"
+    yLabel
   }
 ) => {
   const X = d3.map(data, x)
@@ -46,6 +46,25 @@ export const render = (
     .attr("viewBox", [0, 0, width, height])
     .attr("style", "max-width: 100%; height: auto; height: intrinsic;")
 
+  let areaGradient = svg
+    .append("defs")
+    .append("linearGradient")
+    .attr("id", "areaGradient")
+    .attr("x1", "0%")
+    .attr("y1", "0%")
+    .attr("x2", "0%")
+    .attr("y2", "100%")
+  areaGradient
+    .append("stop")
+    .attr("offset", 0.001)
+    .attr("stop-color", "blue")
+    .attr("stop-opacity", 0.3)
+
+  areaGradient
+    .append("stop")
+    .attr("offset", 0.99)
+    .attr("stop-color", "red")
+    .attr("stop-opacity", 0)
   svg
     .append("g")
     .attr("transform", `translate(${marginLeft},0)`)
@@ -71,7 +90,7 @@ export const render = (
   svg
     .append("path")
     .attr("transform", `translate(${marginLeft})`)
-    .attr("fill", "blue")
+    .attr("fill", "url(#areaGradient)")
     .attr("d", area(I))
   svg
     .append("g")
