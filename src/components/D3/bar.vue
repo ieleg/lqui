@@ -4,9 +4,8 @@
 
 <script>
 import * as d3 from "d3"
-import { BarChart } from "./render.js"
+import { BarChart } from "./bar.js"
 import { barData } from "./mock/bar.js"
-
 
 export default {
   props: {
