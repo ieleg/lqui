@@ -38,7 +38,13 @@ export const render = (
     .x(i => xScale(X[i]))
     .y0(yScale(0))
     .y1(i => yScale(Y[i]))
-
+  const line = d3
+    .line()
+    .defined(i => D[i])
+    .curve(d3.curveStep)
+    .x(i => xScale(X[i]))
+    .y(i => yScale(Y[i]))
+  console.log(line)
   const svg = d3
     .create("svg")
     .attr("width", width)
@@ -56,14 +62,14 @@ export const render = (
     .attr("y2", "100%")
   areaGradient
     .append("stop")
-    .attr("offset", 0.001)
-    .attr("stop-color", "blue")
+    .attr("offset", 0.01)
+    .attr("stop-color", "#f20666")
     .attr("stop-opacity", 0.3)
 
   areaGradient
     .append("stop")
     .attr("offset", 0.99)
-    .attr("stop-color", "red")
+    .attr("stop-color", "#022859")
     .attr("stop-opacity", 0)
   svg
     .append("g")
@@ -86,7 +92,11 @@ export const render = (
         .attr("text-anchor", "start")
         .text(yLabel)
     )
-
+  svg
+    .append("path")
+    .attr("transform", `translate(${marginLeft}, 0)`)
+    .attr("class", "line")
+    .attr("d", line(I))
   svg
     .append("path")
     .attr("transform", `translate(${marginLeft})`)

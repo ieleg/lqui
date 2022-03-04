@@ -17,4 +17,10 @@ export default {
 }
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.line {
+  fill: none;
+  stroke: salmon;
+  stroke-width: 2px;
+}
+</style>
