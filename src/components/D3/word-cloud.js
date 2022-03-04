@@ -85,21 +85,74 @@ export const render = (
     .style("font-size", "14px")
     .text("a simple tooltip")
   const node = Object.assign(svg.node(), { value: null })
-  if (id) {
-    document.querySelector(id).append(node)
-  } else {
-    return node
-  }
 
-  const tipDetail = d3
-    .create("svg")
-    .attr("width", 200)
-    .attr("height", 200)
-    .attr("viewBox", [0, 0, 200, 200])
-    .attr("style", "max-width: 100%; height: auto; height: intrinsic;")
-    .attr("style", "border: 1px solid #000")
-    .attr("class", "d3-tooltip")
-    .style("position", "absolute")
-    .style("visibility", "hidden")
-    .style("background", "rgba(250,250,251,.6)")
+  const serializedSvg = serialize(node)
+  const append = () => {
+    if (id) {
+      document.querySelector(id).append(node)
+    }
+  }
+  return {
+    append,
+    savingForSvg: () => downloadFileByBlob(serializedSvg, "test"),
+    savingForPng: async () => {
+      const rasterizePng = await rasterize(node)
+      downloadFileByBlob(rasterizePng, "test2")
+    }
+  }
+  console.log(rasterize(node))
+  // setTimeout(async () => {
+  //   const ImgUrl = await rasterize(node)
+  //   downloadFileByBlob(ImgUrl, 'test')
+  // }, 2000);
+}
+function downloadFileByBlob(blobUrl, filename) {
+  const eleLink = document.createElement("a")
+  eleLink.download = filename
+  eleLink.style.display = "none"
+  eleLink.href = URL.createObjectURL(blobUrl)
+  document.body.appendChild(eleLink)
+  eleLink.click()
+  URL.revokeObjectURL(eleLink.href)
+  document.body.removeChild(eleLink)
+}
+// 序列化
+function serialize(svg) {
+  const xmlns = "http://www.w3.org/2000/xmlns/"
+  const xlinkns = "http://www.w3.org/1999/xlink"
+  const svgns = "http://www.w3.org/2000/svg"
+  svg = svg.cloneNode(true)
+  const fragment = window.location.href + "#"
+  const walker = document.createTreeWalker(svg, NodeFilter.SHOW_ELEMENT)
+  while (walker.nextNode()) {
+    for (const attr of walker.currentNode.attributes) {
+      if (attr.value.includes(fragment)) {
+        attr.value = attr.value.replace(fragment, "#")
+      }
+    }
+  }
+  svg.setAttributeNS(xmlns, "xmlns", svgns)
+  svg.setAttributeNS(xmlns, "xmlns:xlink", xlinkns)
+  const serializer = new window.XMLSerializer()
+  const string = serializer.serializeToString(svg)
+  return new Blob([string], { type: "image/svg+xml" })
+}
+
+// 栅格化
+function rasterize(node) {
+  let resolve, reject
+  const promise = new Promise((y, n) => ((resolve = y), (reject = n)))
+  const image = new Image()
+  const canvas = document.createElement("canvas")
+  image.onerror = reject
+  image.onload = () => {
+    const rect = node.getBoundingClientRect()
+    canvas.height = rect.height
+    canvas.width = rect.width
+    const context = canvas.getContext("2d")
+    context.drawImage(image, 0, 0, rect.width, rect.height)
+    context.canvas.toBlob(resolve)
+  }
+  image.src = URL.createObjectURL(serialize(node))
+  return promise
 }

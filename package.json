@@ -21,6 +21,7 @@
   "main": "./dist/lqui.common.js",
   "dependencies": {
     "@popperjs/core": "^2.4.4",
+    "@vue/composition-api": "^1.4.9",
     "async-validator": "^3.4.0",
     "color": "^3.1.2",
     "d3": "^7.3.0",
