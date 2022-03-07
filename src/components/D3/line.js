@@ -53,6 +53,7 @@ export function LineChart(
   // Construct scales and axes.
   const xScale = xType(xDomain, xRange)
   const yScale = yType(yDomain, yRange)
+
   const xAxis = d3
     .axisBottom(xScale)
     .ticks(width / 80)
@@ -64,13 +65,20 @@ export function LineChart(
     title === undefined ? Z : title === null ? null : d3.map(data, title)
 
   // Construct a line generator.
-  const line = d3
+  const line = type =>
+    d3
+      .line()
+      .defined(i => D[i])
+      .curve(type)
+      .x(i => xScale(X[i]))
+      .y(i => yScale(Y[i]))
+
+  const line2 = d3
     .line()
+    .curve(d3.curveStep)
     .defined(i => D[i])
-    .curve(curve)
     .x(i => xScale(X[i]))
     .y(i => yScale(Y[i]))
-
   const svg = d3
     .create("svg")
     .attr("width", width)
@@ -104,8 +112,11 @@ export function LineChart(
     .data(d3.group(I, i => Z[i]))
     .join("path")
     .style("mix-blend-mode", mixBlendMode)
-    .attr("stroke", typeof color === "function" ? ([z]) => color(z) : null)
-    .attr("d", ([, I]) => line(I))
+    .attr("stroke", (_, i) => d3.schemeCategory10[i])
+    .attr("d", ([d, I]) => {
+      console.log(d, line2)
+      return line(d.value)(I)
+    })
 
   const dot = svg.append("g").attr("display", "none")
 
@@ -127,7 +138,7 @@ export function LineChart(
       .filter(([z]) => Z[i] === z)
       .raise()
     dot.attr("transform", `translate(${xScale(X[i])},${yScale(Y[i])})`)
-    if (T) dot.select("text").text("从v拆开后" + O[i].x + ", " + O[i].y)
+    if (T) dot.select("text").text("插值类型：" + O[i].name.desc)
   }
 
   function pointerentered() {

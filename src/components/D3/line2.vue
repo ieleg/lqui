@@ -4,7 +4,7 @@
 
 <script>
 import * as d3 from "d3"
-import { LineChart } from "./tip.js"
+import { LineChart } from "./line.js"
 
 export default {
   props: {
@@ -22,11 +22,19 @@ export default {
   },
 
   mounted() {
-    const data = d3.range(-Math.PI * 2, Math.PI * 2, 1 / 256).map((x, k) => {
+    const types = [
+      { value: d3.curveBundle.beta(0.1), desc: "curveBundle.beta(.1)" },
+      { value: d3.curveBundle.beta(0.5), desc: "curveBundle.beta(.5)" },
+      { value: d3.curveBundle.beta(0.9), desc: "curveBundle.beta(.9)" },
+      { value: d3.curveBasis, desc: "curveBasis" },
+      { value: d3.curveLinear, desc: "curveLinear" },
+      { value: d3.curveStepAfter, desc: "curveStepAfter" }
+    ]
+    const data = d3.range(-Math.PI * 2, Math.PI * 2, 1 / 10).map((x, k) => {
       return {
-        y: this.fft(k % 2 ? this.n : 0, x),
+        y: this.fft(this.n, 1 * x),
         x: x,
-        name: "名称" + (k % 2)
+        name: types[k % 6]
       }
     })
     LineChart(data, {

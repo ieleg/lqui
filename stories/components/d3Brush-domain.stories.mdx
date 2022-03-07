@@ -13,7 +13,9 @@ export const Template = (args, { argTypes }) => ({
 
 # bar-chart
 
-这个版本用brush改变其定义域domain来改变其视图范围，之前那个拉宽缩小值域的方法有点反直觉
+这个版本通过改变x轴的定义域domain来改变其视图范围，之前那个拉宽缩小值域的方法有点反直觉
+
+每次拖动会更新x轴的定义域，视图上rect图元会动态增删
 
 ## bar-chart(不显示刷新下)
 <Canvas>

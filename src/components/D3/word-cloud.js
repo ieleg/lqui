@@ -154,5 +154,19 @@ function rasterize(node) {
     context.canvas.toBlob(resolve)
   }
   image.src = URL.createObjectURL(serialize(node))
+  console.log(image.src)
+  return promise
+}
+
+const a = () => {
+  let resolve, reject
+  const promise = new Promise((ok, no) => {
+    ;(resolve = ok), (reject = no)
+  })
+  let a = 1
+  // const promise = new Promise((y, n) => ((resolve = y), (reject = n)))
+  setTimeout(() => {
+    resolve(222)
+  }, 1000)
   return promise
 }
