@@ -1,5 +1,5 @@
 <template>
-  <div id="bar" />
+  <div id="gbar" />
 </template>
 
 <script>
@@ -16,7 +16,7 @@ export default {
 
   mounted() {
     GroupedBarChart(data, {
-      id: "#bar",
+      id: "#gbar",
       x: d => d.date,
       keys: ['targetValue', 'realValue']
     })
